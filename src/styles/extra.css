@@ -15,30 +15,54 @@
 }
 .skip-link:focus { top: 12px; }
 
-/* ---------- Scroll reveal (pengganti AOS) ---------- */
+/* ---------- Scroll reveal (Smooth & Fluid Tactical Motion) ---------- */
 html.js [data-aos] {
   opacity: 0;
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
-html.js [data-aos="fade-up"] { transform: translateY(24px); }
-html.js [data-aos="fade-left"] { transform: translateX(24px); }
-html.js [data-aos="fade-right"] { transform: translateX(-24px); }
-html.js [data-aos="zoom-in"] { transform: scale(0.96); }
-html.js [data-aos].aos-animate { opacity: 1; transform: none; }
+html.js [data-aos="fade-up"] { transform: translateY(32px); }
+html.js [data-aos="fade-left"] { transform: translateX(32px); }
+html.js [data-aos="fade-right"] { transform: translateX(-32px); }
+html.js [data-aos="zoom-in"] { transform: scale(0.92); }
+html.js [data-aos].aos-animate { opacity: 1; transform: translate(0, 0) scale(1); }
 
 @media (prefers-reduced-motion: reduce) {
   html.js [data-aos] { opacity: 1; transform: none; transition: none; }
 }
 
-/* ---------- View Transitions ---------- */
-::view-transition-old(root),
-::view-transition-new(root) { animation-duration: 0.28s; }
+/* ---------- Smooth View Transitions (Page Switching) ---------- */
+::view-transition-old(root) {
+  animation: 0.22s cubic-bezier(0.4, 0, 1, 1) both pageFadeOut;
+}
+::view-transition-new(root) {
+  animation: 0.32s cubic-bezier(0, 0, 0.2, 1) both pageFadeIn;
+}
+
+@keyframes pageFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.99); }
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---------- Tactile Mobile Touch Feedback ---------- */
+.btn:active,
+.chip:active,
+.hud-card:active,
+.agent-tile:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 /* ---------- Filter chips (Agent, Senjata, News) ---------- */
@@ -48,6 +72,25 @@ html.js [data-aos].aos-animate { opacity: 1; transform: none; }
   gap: 10px;
   margin-bottom: 28px;
 }
+
+@media (max-width: 768px) {
+  .filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 22px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .chip {
   --chip-color: var(--paper);
   display: inline-flex;
@@ -63,6 +106,15 @@ html.js [data-aos].aos-animate { opacity: 1; transform: none; }
   text-transform: uppercase;
   cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .chip {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
 }
 .chip:hover { color: var(--paper); border-color: var(--paper-dim); }
 .chip[aria-pressed="true"] {
@@ -1423,13 +1475,27 @@ a.agent-card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px
   color: var(--paper-dim);
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.76rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
-  padding: 4px 8px;
-  min-height: 28px;
+  padding: 6px 10px;
+  min-height: 34px;
+  min-width: 32px;
   cursor: pointer;
   transition: all 0.15s ease;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .nav-actions {
+    gap: 10px;
+  }
+  .lang-btn {
+    padding: 6px 8px;
+    font-size: 0.76rem;
+  }
 }
 
 .lang-btn:hover:not(.is-active) {
@@ -1691,6 +1757,45 @@ a.agent-card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px
 @media (max-width: 900px) {
   .header-bg-text {
     display: none;
+  }
+}
+
+/* ---------- Mobile & Tablet Responsive Polish ---------- */
+.hero-cta-btns {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .hero-cta-btns {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .hero-cta-btns .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-header-wrap,
+  .page-header-tactical {
+    padding: clamp(36px, 7vw, 64px) clamp(16px, 4vw, 24px) clamp(24px, 5vw, 40px) !important;
+  }
+
+  .home-cta-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+
+  .btn-cta-play {
+    width: 100%;
+    justify-content: center;
   }
 }
 

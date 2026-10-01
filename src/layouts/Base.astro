@@ -79,21 +79,51 @@ const ogImage = Astro.site ? new URL(resolvedImage, Astro.site).href : resolvedI
         const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
         const links = document.querySelector(".nav-links");
         if (!toggle || !links) return;
-        toggle.addEventListener("click", () => {
+
+        toggle.onclick = (e) => {
+          e.stopPropagation();
           const open = links.classList.toggle("open");
           toggle.setAttribute("aria-expanded", String(open));
+        };
+
+        links.querySelectorAll("a").forEach((a) => {
+          a.addEventListener("click", () => {
+            links.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        document.addEventListener("click", (e) => {
+          if (links.classList.contains("open") && !toggle.contains(e.target as Node) && !links.contains(e.target as Node)) {
+            links.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && links.classList.contains("open")) {
+            links.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+            toggle.focus();
+          }
         });
       }
 
       function bootIn() {
+        const boots = document.querySelectorAll<HTMLElement>(".boot");
+        if (!boots.length) return;
+        boots.forEach((el) => el.classList.remove("in"));
         requestAnimationFrame(() => {
-          setTimeout(() => document.querySelectorAll(".boot").forEach((el) => el.classList.add("in")), 80);
+          setTimeout(() => {
+            boots.forEach((el) => el.classList.add("in"));
+          }, 40);
         });
       }
 
       // Pengganti AOS: animasi muncul saat di-scroll, tanpa library eksternal.
       function reveal() {
         const els = document.querySelectorAll<HTMLElement>("[data-aos]:not(.aos-animate)");
+        if (!els.length) return;
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (reduce || !("IntersectionObserver" in window)) {
           els.forEach((el) => el.classList.add("aos-animate"));
@@ -105,22 +135,30 @@ const ogImage = Astro.site ? new URL(resolvedImage, Astro.site).href : resolvedI
               if (!entry.isIntersecting) return;
               const el = entry.target as HTMLElement;
               const delay = el.dataset.aosDelay;
-              if (delay) el.style.transitionDelay = `${Math.min(Number(delay), 400)}ms`;
+              if (delay) el.style.transitionDelay = `${Math.min(Number(delay), 350)}ms`;
               el.classList.add("aos-animate");
               io.unobserve(el);
             });
           },
-          { rootMargin: "0px 0px -60px 0px" },
+          { rootMargin: "0px 0px -15px 0px", threshold: 0.05 },
         );
         els.forEach((el) => io.observe(el));
       }
 
-      document.addEventListener("astro:page-load", () => {
+      function initPage() {
         setupI18n();
         setupNav();
         bootIn();
         reveal();
-      });
+      }
+
+      // Pastikan berjalan baik pada cold load pertama maupun saat navigasi ClientRouter
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initPage);
+      } else {
+        initPage();
+      }
+      document.addEventListener("astro:page-load", initPage);
     </script>
   </body>
 </html>
