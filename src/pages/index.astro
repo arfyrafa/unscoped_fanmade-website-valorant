@@ -1,0 +1,180 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import { agents } from "../data/agents";
+import { maps } from "../data/maps";
+import { news } from "../data/news";
+import { agentImg, img } from "../lib/img";
+
+const featured = [
+  { slug: "raze", role: "Duelist", text: "Ujung tombak tim: masuk duluan, ciptakan ruang, dan menangkan duel 1v1." },
+  { slug: "viper", role: "Controller", text: "Mengatur medan pertempuran lewat smoke dan area denial untuk membuka jalan tim." },
+  { slug: "sage", role: "Sentinel", text: "Menjaga lini belakang, mendeteksi musuh, dan mengamankan site dari flank." },
+].map((f) => ({ ...f, agent: agents.find((a) => a.slug === f.slug)! }));
+
+const latest = news.slice(0, 3);
+---
+
+<Base bodyClass="page-home">
+  <header class="container hero-header-wrap" style="padding: 88px 24px 64px;">
+    <span class="header-bg-text" aria-hidden="true">VALORANT<br />TACTICAL</span>
+    <span class="badge boot d1"><span class="dot"></span> <span data-i18n="home.heroBadge">Fan Project, Non-Official Showcase</span></span>
+    <h1 class="boot d2" style="margin-top:22px; max-width: 16ch;" data-i18n="home.heroTitle">Pertempuran Taktis 5v5</h1>
+    <p class="lede boot d3" style="margin-top:22px;" data-i18n="home.heroLede">
+      UNSCOPED merangkum karakter, gameplay, dan update resmi Valorant ke dalam tampilan taktikal modern.
+    </p>
+    <div class="boot d4" style="margin-top:32px; display:flex; gap:16px; flex-wrap:wrap;">
+      <a href="/agents/" class="btn btn-primary" data-i18n="home.heroCtaAgents">Lihat Semua Agent</a>
+      <a href="/gameplay/" class="btn btn-ghost" data-i18n="home.heroCtaGameplay">Pelajari Gameplay</a>
+    </div>
+  </header>
+
+  <div class="container" data-aos="fade-up">
+    <div class="stat-strip">
+      <div class="stat-box"><div class="num">5V5</div><div class="label">Tactical Combat</div></div>
+      <div class="stat-box"><div class="num">{agents.length}</div><div class="label" data-i18n="home.statAgents">Agent di Showcase</div></div>
+      <div class="stat-box"><div class="num">{maps.length}</div><div class="label" data-i18n="home.statMaps">Peta</div></div>
+      <div class="stat-box"><div class="num">1</div><div class="label" data-i18n="home.statLife">Nyawa / Ronde</div></div>
+    </div>
+  </div>
+
+  <section class="tight">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <span class="index" data-i18n="home.agentsIndex">// 01 AGENT</span>
+        <h2 data-i18n="home.agentsTitle">Agent Sorotan</h2>
+        <p class="lede" data-i18n="home.agentsLede">
+          Empat role utama menentukan jalannya ronde. Pilih agent yang sesuai dengan gaya bermain tim Anda.
+        </p>
+      </div>
+      <div class="grid-3">
+        {featured.map((f, i) => (
+          <a
+            href={`/agents/${f.agent.slug}/`}
+            class:list={["hud-card", "role-link", `role-${f.role.toLowerCase()}`]}
+            data-aos="fade-up"
+            data-aos-delay={i * 100}
+          >
+            <div class="agent-avatar">
+              <Image src={agentImg(f.agent.image)} alt={f.agent.name} width={480} />
+            </div>
+            <div class="role-badge-row">
+              <span class="role-badge-pill">{f.role}</span>
+              <span class="role-badge-code">CLASS 0{i + 1}</span>
+            </div>
+            <p data-i18n={`home.roleDesc.${f.role.toLowerCase()}`}>{f.text}</p>
+            <span class="who">
+              <span class="who-label" data-i18n="home.roleExample">Contoh</span>
+              <span class="who-name">{f.agent.name} &rarr;</span>
+            </span>
+          </a>
+        ))}
+      </div>
+      <div class="roster-cta-strip" data-aos="fade-up">
+        <div class="roster-cta-info">
+          <div class="roster-cta-telemetry">
+            <span class="pulse-dot"></span>
+            <span data-i18n="home.rosterCtaTag">DATABASE OPERATIF // PROTOKOL PENUH</span>
+          </div>
+          <h3 class="roster-cta-headline" data-i18n="home.rosterCtaHead">Siap Menemukan Agent Jagoanmu?</h3>
+          <p class="roster-cta-desc" data-i18n="home.rosterCtaDesc">
+            Lihat daftar lengkap 28+ Agent: eksplorasi biodata, kemampuan Signature, Ultimate, dan taktik kombinasi tim.
+          </p>
+        </div>
+        <a href="/agents/" class="btn-roster-cta">
+          <span data-i18n="home.agentsCta">Lihat Semua 28+ Agent</span>
+          <span class="btn-roster-cta-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" style="background: rgba(13, 21, 34, 0.65); border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="container">
+      <div class="grid-2">
+        <div data-aos="fade-right">
+          <span class="index" style="color:var(--cyan); font-family:var(--font-display); font-size:.85rem;" data-i18n="home.gameplayIndex">// 02 GAMEPLAY</span>
+          <h2 style="margin-top:12px;" data-i18n="home.gameplayTitle">Gameplay Taktis</h2>
+          <p style="margin-top:16px;" data-i18n="home.gameplayP2">
+            Ronde dimulai dari fase beli senjata dan alat, lalu berkembang jadi pertarungan wilayah demi wilayah
+            untuk memasang atau menjinakkan Spike. Satu kesalahan bisa mengakhiri ronde; di sinilah kerja sama tim dan
+            pembacaan situasi jadi penentu kemenangan.
+          </p>
+          <a href="/gameplay/" class="btn btn-primary" style="margin-top:24px;" data-i18n="common.readMore">Selengkapnya</a>
+        </div>
+        <div class="hud-panel" data-aos="fade-left">
+          <h3 style="color:var(--cyan);" data-i18n="home.roundBriefTitle">Ronde Singkat</h3>
+          <ul style="color:var(--paper-dim); padding-left:18px; line-height:2;">
+            <li data-i18n="home.roundBuy">Buy Phase: susun strategi dan alat</li>
+            <li data-i18n="home.roundPlant">Plant / Defuse: kendalikan Spike</li>
+            <li data-i18n="home.roundAbility">Ability Combo: sinergi antar Agent</li>
+            <li data-i18n="home.roundClutch">Clutch Moment: satu lawan banyak</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <span class="index" data-i18n="home.trailerIndex">// 03 TRAILER</span>
+        <h2 data-i18n="home.trailerTitle">Saksikan Aksi Taktis</h2>
+        <p class="lede" style="margin-top:12px;" data-i18n="home.trailerLede">
+          Rasakan intensitas pertempuran 5v5: koordinasi tim, duel presisi, dan perpaduan kemampuan unik para Agent dalam trailer resmi VALORANT.
+        </p>
+      </div>
+      <div class="trailer-wrap" data-aos="zoom-in">
+        <div class="trailer-telemetry">
+          <span><span class="rec-dot"></span><span data-i18n="home.trailerLive">FEED // LIVE STREAM</span></span>
+          <span data-i18n="home.trailerOfficial">VALORANT // OFFICIAL TRAILER</span>
+          <span>HD 1080P // 60 FPS</span>
+        </div>
+        <div class="trailer-player">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/e_E9W2vsRbQ?rel=0&modestbranding=1"
+            title="VALORANT Official Cinematic Launch Trailer - DUELISTS"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" style="background: rgba(13, 21, 34, 0.65); border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="container">
+      <div class="section-head">
+        <span class="index" data-i18n="home.newsIndex">// 04</span>
+        <h2 data-i18n="home.newsTitle">Update Terbaru</h2>
+      </div>
+      <div class="grid-3">
+        {latest.map((n, i) => (
+          <a href={`/news/${n.slug}/`} class="hud-card news-mini" data-aos="fade-up" data-aos-delay={i * 100}>
+            <div class="thumb">
+              <Image src={img(n.cover)} alt="" width={640} />
+            </div>
+            <span class="badge" style="align-self:flex-start;">{n.category}</span>
+            <h3 style="margin-top:12px;">{n.title}</h3>
+            <time>{n.date}</time>
+            <p>{n.summary}</p>
+          </a>
+        ))}
+      </div>
+      <div style="margin-top:32px;">
+        <a href="/news/" class="btn btn-ghost" data-i18n="common.allNews">Semua Berita</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="container hud-panel flex-between" data-aos="zoom-in">
+      <div>
+        <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);" data-i18n="home.ctaTitle">Siap Turun ke Lapangan?</h2>
+        <p style="margin-top:8px;" data-i18n="home.ctaDesc">Mainkan langsung dari klien resmi Valorant.</p>
+      </div>
+      <a href="/play/" class="btn btn-primary" data-i18n="common.playNow">Play Now</a>
+    </div>
+  </section>
+</Base>

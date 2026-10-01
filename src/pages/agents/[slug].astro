@@ -1,0 +1,144 @@
+---
+import { Image, getImage } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import { agents, type Agent } from "../../data/agents";
+import { agentImg, abilityImg } from "../../lib/img";
+import "../../styles/agent-detail.css";
+
+export function getStaticPaths() {
+  return agents.map((agent, i) => ({
+    params: { slug: agent.slug },
+    props: {
+      agent,
+      prev: agents[(i - 1 + agents.length) % agents.length],
+      next: agents[(i + 1) % agents.length],
+    },
+  }));
+}
+
+interface Props { agent: Agent; prev: Agent; next: Agent }
+const { agent, prev, next } = Astro.props;
+const portrait = agentImg(agent.image);
+const og = await getImage({ src: portrait, width: 1200, format: "jpeg" });
+---
+
+<Base title={agent.name} description={`${agent.name}, ${agent.role}. ${agent.short}`} bodyClass="page-agent" image={og.src}>
+  <div class="agent-detail">
+    <div class="agent-scene">
+      <div class="agent-scene-media">
+        <Image src={portrait} alt="" aria-hidden="true" class="agent-bg-image" width={900} loading="eager" />
+        <Image
+          src={portrait}
+          alt={agent.name}
+          class="agent-detail-image"
+          width={1100}
+          loading="eager"
+          fetchpriority="high"
+          transition:name={`agent-${agent.slug}`}
+        />
+      </div>
+
+      <section class="agent-main">
+        <div class="agent-info">
+          <a href="/agents/" class="back-agent" data-i18n="agents.backToAgents">&larr; BACK TO AGENTS</a>
+          <span class="badge">{agent.role}</span>
+          <div class="agent-line"></div>
+          <h1 class="agent-name">{agent.name}</h1>
+          <p class="agent-desc" data-i18n={`agent.bio.${agent.slug}`}>{agent.bio}</p>
+
+          <div class="ability-buttons" role="tablist" aria-label={`Kemampuan ${agent.name}`} data-i18n-aria="agents.abilityTablistAria">
+            {agent.abilities.map((ab, i) => (
+              <button
+                type="button"
+                class:list={["ability-button", { active: i === 0 }]}
+                role="tab"
+                id={`tab-${ab.key}`}
+                aria-controls={`panel-${ab.key}`}
+                aria-selected={i === 0 ? "true" : "false"}
+                tabindex={i === 0 ? 0 : -1}
+                data-key={ab.key}
+              >
+                <span class="ability-key">{ab.key}</span>
+                <span class="ability-short" data-i18n={`ability.type.${ab.type.toLowerCase()}`}>{ab.type}</span>
+              </button>
+            ))}
+          </div>
+          <p class="ability-hint" data-i18n-html="agents.abilityHint">Tekan <kbd>Q</kbd><kbd>E</kbd><kbd>C</kbd><kbd>X</kbd> di keyboard untuk ganti kemampuan.</p>
+        </div>
+
+        <div class="ability-content">
+          {agent.abilities.map((ab, i) => {
+            const icon = abilityImg(agent.image, ab.key);
+            return (
+              <div class="ability-panel" role="tabpanel" id={`panel-${ab.key}`} aria-labelledby={`tab-${ab.key}`} hidden={i !== 0}>
+                <div class="ability-visual">
+                  {icon ? (
+                    <Image src={icon} alt={ab.name} width={256} />
+                  ) : (
+                    <div class="ability-placeholder">
+                      <div class="ability-placeholder-key">{ab.key}</div>
+                      <div class="ability-placeholder-text">ABILITY VISUAL</div>
+                    </div>
+                  )}
+                </div>
+                <div class="ability-meta">
+                  <div class="ability-key-label">{ab.key}</div>
+                  <span class="ability-type" data-i18n={`ability.type.${ab.type.toLowerCase()}`}>{ab.type}</span>
+                </div>
+                <h3 class="ability-name">{ab.name}</h3>
+                <p class="ability-desc" data-i18n={`agent.ability.${agent.slug}.${ab.key}.desc`}>{ab.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+
+    <nav class="agent-pager" aria-label="Agent lain" data-i18n-aria="agents.pagerAria">
+      <a href={`/agents/${prev.slug}/`}>&larr; {prev.name}</a>
+      <a href={`/agents/${next.slug}/`}>{next.name} &rarr;</a>
+    </nav>
+  </div>
+</Base>
+
+<script>
+  function setupAbilities() {
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>(".ability-button[role=tab]")];
+    if (!tabs.length || tabs[0].dataset.bound) return;
+
+    function show(key: string, focus = false) {
+      tabs.forEach((t) => {
+        const on = t.dataset.key === key;
+        t.classList.toggle("active", on);
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute("aria-controls")!);
+        if (panel) panel.hidden = !on;
+        if (on && focus) t.focus();
+      });
+    }
+
+    tabs.forEach((t, i) => {
+      t.dataset.bound = "1";
+      t.addEventListener("click", () => show(t.dataset.key!));
+      t.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        const n = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+        show(n.dataset.key!, true);
+      });
+    });
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const target = e.target as HTMLElement;
+      if (target.closest("input, textarea, [contenteditable]")) return;
+      const key = e.key.toUpperCase();
+      if (tabs.some((t) => t.dataset.key === key)) show(key);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("astro:before-swap", () => document.removeEventListener("keydown", onKey), { once: true });
+  }
+
+  document.addEventListener("astro:page-load", setupAbilities);
+</script>

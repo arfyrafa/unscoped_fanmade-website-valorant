@@ -1,0 +1,17 @@
+---
+import { navLinks } from "./links";
+---
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <a href="/" class="nav-mark"><span class="dot"></span> UNSCOPED</a>
+      <ul class="footer-links">
+        {navLinks.map((l) => <li><a href={l.href} data-i18n={l.i18nKey}>{l.label}</a></li>)}
+      </ul>
+    </div>
+    <div class="disclaimer" data-i18n="footer.disclaimerFull">
+      UNSCOPED dibuat di bawah kebijakan "Legal Jibber Jabber" dari Riot Games menggunakan aset milik Riot Games. Riot Games tidak mendukung atau mensponsori proyek ini. Proyek non-komersial untuk keperluan akademik (Lomba Web Development 2026, IT FEST). Tidak berafiliasi dengan Riot Games.
+    </div>
+  </div>
+</footer>

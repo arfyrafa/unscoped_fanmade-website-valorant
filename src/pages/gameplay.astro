@@ -1,0 +1,580 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import { weapons, weaponCategories } from "../data/weapons";
+import { maps } from "../data/maps";
+import { img } from "../lib/img";
+
+const modes = [
+  {
+    "slug": "unrated",
+    "name": "Unrated / Competitive",
+    "text": "Mode utama 5v5 di mana tim harus menangkan 13 ronde atau lebih. Setiap ronde menuntut rotasi, pengelolaan ekonomi, dan eksekusi presisi agar strategi tetap efektif di bawah tekanan."
+  },
+  {
+    "slug": "deathmatch",
+    "name": "Deathmatch",
+    "text": "Mode cepat dengan respawn terus-menerus dan fokus pada eliminasi lawan. Ini adalah arena untuk mengasah aim, peletakan posisi, dan keputusan instan tanpa terlalu banyak butuh strategi tim."
+  },
+  {
+    "slug": "spikerush",
+    "name": "Spike Rush",
+    "text": "Versi lebih cepat dari mode kompetitif dengan ringkasnya peta, kecepatan plant, dan semua agen tersedia langsung. Format ini membuat tempo ronde jauh lebih padat dan agresif."
+  },
+  {
+    "slug": "escalation",
+    "name": "Escalation",
+    "text": "Setiap pemain memulai dengan senjata dasar dan naik level secara bertahap saat membunuh lawan. Mode ini mengandalkan adaptasi cepat dan penguasaan tempo per ronde."
+  },
+  {
+    "slug": "replication",
+    "name": "Replication",
+    "text": "Tim meniru gaya main satu sama lain dalam sesi yang menuntut pengamatan dan kontrol ruang. Mode ini memberi pengalaman unik untuk membaca pola lawan dan menyesuaikan pendekatan."
+  },
+  {
+    "slug": "premier",
+    "name": "Premier",
+    "text": "Mode kompetitif berbasis liga dengan struktur lebih formal dan mengandalkan kerja sama jangka panjang. Tim harus menjaga konsistensi dan strategi secara terus-menerus di setiap set."
+  }
+];
+
+const round = [
+  "Setiap ronde dimulai dengan fase pembelian, saat tim menilai ekonomi, memilih senjata, dan menentukan komposisi kemampuan paling efektif untuk map. Setelah itu, satu tim keluar dengan rencana agresif atau bertahan, menyesuaikan rotasi berdasarkan posisi lawan, kontrol area, dan kebutuhan spike. Ketika satu sisi masuk ke zona plant atau deny, momentum berubah cepat: keputusan kecil di sudut map bisa menentukan apakah ronde berakhir dengan taktik yang presisi atau chaos yang tak terduga.",
+  "Jika spike sudah dipasang, fokus beralih ke timing, tekanan, dan komunikasi. Tim yang menahan posisi dengan disiplin akan mencoba menunggu momen, sementara tim penyerang berusaha memaksa pertarungan di titik penting. Di detik terakhir, ketika satu lawan tersisa atau satu side lane terbuka, aksi itu berubah menjadi clutch: satu duel, satu keputusan, dan satu kesalahan bisa menutup ronde."
+];
+---
+
+<Base title="Gameplay" description="Mode permainan, alur ronde, senjata, dan peta Valorant di showcase UNSCOPED.">
+  <header class="container page-header-tactical" style="padding: 64px 24px 40px;">
+    <span class="header-bg-text" aria-hidden="true">TACTICAL<br />COMBAT</span>
+    <span class="badge"><span class="dot"></span> <span data-i18n="gameplay.badge">Mekanik</span></span>
+    <h1 style="margin-top:18px;" data-i18n="gameplay.title">Gameplay</h1>
+    <p class="eyebrow-line">PRECISION GUNPLAY // TACTICAL ABILITIES</p>
+    <p class="lede" style="margin-top:14px;" data-i18n="gameplay.lede">
+      Valorant menggabungkan tempo taktis, kontrol area, dan keputusan cepat dalam satu ronde yang terasa intens. Di sini,
+      tiap mode menuntut koordinasi, pemilihan agen, dan ketepatan timing agar strategi bisa berubah menjadi dominasi.
+    </p>
+  </header>
+
+  <section class="tight">
+    <div class="container">
+      <div class="section-head">
+        <span class="index" data-i18n="gameplay.modesIndex">// MODE</span>
+        <h2 data-i18n="gameplay.modesTitle">Mode Permainan</h2>
+      </div>
+      <div class="grid-3">
+        {modes.map((m, i) => (
+          <article class="hud-card" data-aos="fade-up" data-aos-delay={(i % 3) * 80}>
+            <h3>{m.name}</h3>
+            <p data-i18n={`gameplay.mode.${m.slug}.text`}>{m.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" style="background: rgba(13, 21, 34, 0.65); border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="container grid-2">
+      <div data-aos="fade-right">
+        <span class="index" style="color:var(--cyan); font-family:var(--font-display); font-size:.85rem;" data-i18n="gameplay.roundIndex">// ALUR RONDE</span>
+        <h2 style="margin-top:12px;" data-i18n="gameplay.roundTitle">Dari Buy Phase ke Clutch</h2>
+        <p style="margin-top:16px;" data-i18n="gameplay.roundP1">{round[0]}</p>
+        <p style="margin-top:12px;" data-i18n="gameplay.roundP2">{round[1]}</p>
+      </div>
+      <div class="hud-panel" data-aos="fade-left">
+        <h3 style="color:var(--cyan);" data-i18n="gameplay.keyFeaturesTitle">Fitur Kunci</h3>
+        <ul style="color:var(--paper-dim); padding-left:18px; line-height:2;">
+          <li data-i18n="gameplay.keyFeat1">Economy system yang mengubah keputusan beli tiap ronde.</li>
+          <li data-i18n="gameplay.keyFeat2">Ability combo yang memungkinkan agen saling menutupi area masuk.</li>
+          <li data-i18n="gameplay.keyFeat3">Spike carrier yang memaksa tim membangun strategi sekitar satu orang kunci.</li>
+          <li data-i18n="gameplay.keyFeat4">Peta destructible yang membuka rotasi dan titik kontrol baru.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="senjata" class="weapon-showcase tight">
+    <div class="container">
+      <div class="weapon-header">
+        <h2 data-i18n="gameplay.arsenalHeading">Pilih Senjatamu</h2>
+        <p data-i18n="gameplay.arsenalSubhead">{weapons.length} senjata dalam {weaponCategories.length} kelas. Pilih kelas untuk menyaring.</p>
+      </div>
+      <div class="filter-bar" role="group" aria-label="Filter kelas senjata" data-i18n-aria="gameplay.filterWeaponAria" data-filter-group="weapon">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true"><span data-i18n="common.filterAll">Semua</span> <span class="count">{weapons.length}</span></button>
+        {weaponCategories.map((c) => (
+          <button class="chip" type="button" data-filter={c} aria-pressed="false">
+            {c} <span class="count">{weapons.filter((w) => w.category === c).length}</span>
+          </button>
+        ))}
+      </div>
+      <p class="filter-status" aria-live="polite" data-filter-status></p>
+      <div class="weapon-grid">
+        {weapons.map((w) => (
+          <article class="weapon-card" data-filter-item data-value={w.category}>
+            <div class="weapon-top-bar">
+              <span class="weapon-badge-cat">{w.category}</span>
+              <span class="weapon-badge-cost">{w.cost > 0 ? `¤ ${w.cost.toLocaleString()}` : "GRATIS"}</span>
+            </div>
+            <div class="weapon-visual">
+              <Image src={img(`weapons/${w.image}.avif`)} alt={w.name} width={480} />
+            </div>
+            <h3>{w.name}</h3>
+            <p class="weapon-brief" data-i18n={`weapon.desc.${w.image}`}>{w.description}</p>
+
+            <div class="weapon-mini-stats">
+              <div class="mini-stat">
+                <span class="mini-label">HEAD</span>
+                <span class="mini-val text-red">{w.damage.head}</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">BODY</span>
+                <span class="mini-val text-cyan">{w.damage.body}</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-label">MAG</span>
+                <span class="mini-val">{w.magazine > 0 ? w.magazine : "—"}</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn-inspect-weapon"
+              data-weapon-name={w.name}
+              aria-haspopup="dialog"
+            >
+              <span data-i18n="gameplay.inspectBtn">INSPEKSI STAT // INTEL</span>
+              <span class="arrow" aria-hidden="true">&rarr;</span>
+            </button>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TACTICAL WEAPON INTEL & COMPARISON MODAL -->
+  <dialog id="weapon-modal" class="weapon-modal" aria-labelledby="modal-weapon-name">
+    <div class="weapon-modal-backdrop" data-close-modal></div>
+    <div class="weapon-modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="badge" id="modal-weapon-cat">RIFLE</span>
+          <h2 id="modal-weapon-name">VANDAL</h2>
+        </div>
+        <button type="button" class="btn-modal-close" data-close-modal aria-label="Tutup modal" data-i18n-aria="gameplay.closeModal">
+          ✕ ESC
+        </button>
+      </div>
+
+      <!-- Top Section: Main Weapon Dossier (2 Balanced Columns) -->
+      <div class="modal-body-grid">
+        <!-- Left: Image & Description -->
+        <div class="modal-col-visual">
+          <div class="modal-img-container">
+            <img id="modal-weapon-img" src="" alt="" />
+          </div>
+          <p id="modal-weapon-desc" class="modal-desc"></p>
+        </div>
+
+        <!-- Right: Damage Anatomy & Operational Specs (Compact Grid) -->
+        <div class="modal-col-intel">
+          <div class="stat-section-title" data-i18n="gameplay.modalDmgTitle">// ANATOMI DAMAGE PER PELURU</div>
+          <div class="damage-anatomy-grid">
+            <div class="damage-card head">
+              <div class="damage-target" data-i18n="gameplay.modalHead">🎯 KEPALA (HEAD)</div>
+              <div class="damage-val" id="modal-dmg-head">160</div>
+              <div class="damage-sub" id="modal-lethal-head">Lethal (1-Shot Kill)</div>
+            </div>
+            <div class="damage-card body">
+              <div class="damage-target" data-i18n="gameplay.modalBody">🛡️ BADAN (BODY)</div>
+              <div class="damage-val" id="modal-dmg-body">40</div>
+              <div class="damage-sub" id="modal-shots-body">4 Tembakan (150 HP)</div>
+            </div>
+            <div class="damage-card leg">
+              <div class="damage-target" data-i18n="gameplay.modalLeg">🦵 KAKI (LEGS)</div>
+              <div class="damage-val" id="modal-dmg-leg">34</div>
+              <div class="damage-sub" id="modal-shots-leg">5 Tembakan (150 HP)</div>
+            </div>
+          </div>
+
+          <div class="stat-section-title" data-i18n="gameplay.modalSpecsTitle">// SPESIFIKASI OPERASIONAL</div>
+          <div class="specs-grid">
+            <div class="spec-row">
+              <span class="spec-name" data-i18n="gameplay.modalCost">KREDIT (COST)</span>
+              <span class="spec-value" id="modal-spec-cost">¤ 2,900</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-name" data-i18n="gameplay.modalFireRate">FIRE RATE</span>
+              <span class="spec-value" id="modal-spec-firerate">9.75 rds/sec</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-name" data-i18n="gameplay.modalMag">MAGAZINE</span>
+              <span class="spec-value" id="modal-spec-mag">25 Peluru</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-name" data-i18n="gameplay.modalWallPen">PENETRASI DINDING</span>
+              <span class="spec-value" id="modal-spec-wallpen">Medium</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-name" data-i18n="gameplay.modalRange">JARAK EFEKTIF</span>
+              <span class="spec-value" id="modal-spec-range">0 - 50m</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-name" data-i18n="gameplay.modalFireMode">MODE TEMBAK</span>
+              <span class="spec-value" id="modal-spec-firemode">Full Auto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section: Comparison Studio (Full Width) -->
+      <div class="modal-comparison-section">
+        <div class="modal-compare-box">
+          <label for="compare-select" class="compare-label" data-i18n="gameplay.compareLabel">// BANDINGKAN INTEL DENGAN SENJATA LAIN:</label>
+          <div class="compare-select-wrap">
+            <select id="compare-select" class="compare-select">
+              <option value="" data-i18n="gameplay.compareSelectPlaceholder">-- Pilih Senjata Pembanding Untuk Simulasi Head-to-Head --</option>
+              {weapons.map((w) => (
+                <option value={w.name}>{w.name} ({w.category})</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <!-- Dynamic Comparison Result Box -->
+        <div id="comparison-result" class="comparison-result" style="display:none;">
+          <div class="compare-header">
+            <span><span data-i18n="gameplay.compareHeading">PERBANDINGAN INTEL:</span> <strong id="comp-base-name">VANDAL</strong> vs <strong id="comp-target-name">PHANTOM</strong></span>
+          </div>
+
+          <div class="compare-content-grid">
+            <!-- Left: Side-by-side Visual Weapon Previews -->
+            <div class="compare-visual-banner">
+              <div class="compare-weapon-preview base">
+                <div class="compare-img-box">
+                  <img id="comp-base-img" src="" alt="Senjata Utama" data-i18n-alt="gameplay.altBaseWeapon" />
+                </div>
+                <div class="compare-preview-meta">
+                  <span class="compare-preview-name" id="comp-preview-base-name">Vandal</span>
+                  <span class="compare-preview-cat" id="comp-preview-base-cat">Rifle</span>
+                </div>
+              </div>
+
+              <div class="compare-vs-badge">VS</div>
+
+              <div class="compare-weapon-preview target">
+                <div class="compare-img-box">
+                  <img id="comp-target-img" src="" alt="Senjata Pembanding" data-i18n-alt="gameplay.altTargetWeapon" />
+                </div>
+                <div class="compare-preview-meta">
+                  <span class="compare-preview-name" id="comp-preview-target-name">Phantom</span>
+                  <span class="compare-preview-cat" id="comp-preview-target-cat">Rifle</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Comparison Table -->
+            <div class="compare-table-wrap">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th class="col-metric" data-i18n="gameplay.compareColMetric" style="color:var(--cyan); font-weight:700;">METRIK</th>
+                    <th id="th-base">Vandal</th>
+                    <th id="th-target">Target</th>
+                  </tr>
+                </thead>
+                <tbody id="compare-table-body">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <section id="maps" class="tight">
+    <div class="container">
+      <div class="section-head">
+        <span class="index" data-i18n="gameplay.mapsIndex">// MAPS</span>
+        <h2 data-i18n="gameplay.mapsTitle">Peta Kompetitif</h2>
+      </div>
+      <div class="grid-map">
+        {maps.map((m, i) => (
+          <article class="hud-card map-card" data-aos="fade-up" data-aos-delay={(i % 3) * 80}>
+            <div class="map-img">
+              <Image src={img(`maps/${m.image}.avif`)} alt={`Peta ${m.name}`} width={640} />
+            </div>
+            <div class="map-body">
+              <h3>{m.name}</h3>
+              <p data-i18n={`map.desc.${m.image}`}>{m.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ weaponsData: weapons }}>
+  window.__WEAPONS_DATA__ = weaponsData;
+</script>
+
+<script>
+  import { setupFilters } from "../lib/filter";
+  import { getLanguage, translations } from "../lib/i18n";
+
+  function setupWeaponInspector() {
+    const weaponsData = (window as any).__WEAPONS_DATA__;
+    if (!weaponsData) return;
+
+    const modal = document.getElementById("weapon-modal") as HTMLDialogElement | null;
+    if (!modal) return;
+
+    let currentWeapon: any = null;
+
+    const catEl = document.getElementById("modal-weapon-cat");
+    const nameEl = document.getElementById("modal-weapon-name");
+    const imgEl = document.getElementById("modal-weapon-img") as HTMLImageElement | null;
+    const descEl = document.getElementById("modal-weapon-desc");
+
+    const dmgHeadEl = document.getElementById("modal-dmg-head");
+    const lethalHeadEl = document.getElementById("modal-lethal-head");
+    const dmgBodyEl = document.getElementById("modal-dmg-body");
+    const shotsBodyEl = document.getElementById("modal-shots-body");
+    const dmgLegEl = document.getElementById("modal-dmg-leg");
+    const shotsLegEl = document.getElementById("modal-shots-leg");
+
+    const costEl = document.getElementById("modal-spec-cost");
+    const fireRateEl = document.getElementById("modal-spec-firerate");
+    const magEl = document.getElementById("modal-spec-mag");
+    const wallPenEl = document.getElementById("modal-spec-wallpen");
+    const rangeEl = document.getElementById("modal-spec-range");
+    const fireModeEl = document.getElementById("modal-spec-firemode");
+
+    const compareSelect = document.getElementById("compare-select") as HTMLSelectElement | null;
+    const compResultBox = document.getElementById("comparison-result");
+    const compBaseName = document.getElementById("comp-base-name");
+    const compTargetName = document.getElementById("comp-target-name");
+    const thBase = document.getElementById("th-base");
+    const thTarget = document.getElementById("th-target");
+    const tbody = document.getElementById("compare-table-body");
+    const compBaseImg = document.getElementById("comp-base-img") as HTMLImageElement | null;
+    const compTargetImg = document.getElementById("comp-target-img") as HTMLImageElement | null;
+    const compPreviewBaseName = document.getElementById("comp-preview-base-name");
+    const compPreviewBaseCat = document.getElementById("comp-preview-base-cat");
+    const compPreviewTargetName = document.getElementById("comp-preview-target-name");
+    const compPreviewTargetCat = document.getElementById("comp-preview-target-cat");
+
+    function getDict() {
+      const lang = getLanguage();
+      return translations[lang] || translations.id;
+    }
+
+    function renderWeaponModal() {
+      if (!currentWeapon) return;
+      const dict = getDict();
+      const lang = getLanguage();
+
+      if (catEl) catEl.textContent = currentWeapon.category;
+      if (nameEl) nameEl.textContent = currentWeapon.name;
+
+      const descKey = `weapon.desc.${currentWeapon.image}`;
+      if (descEl) descEl.textContent = dict[descKey] || currentWeapon.description;
+
+      const card = document.querySelector(`[data-weapon-name="${currentWeapon.name}"]`)?.closest('.weapon-card');
+      const imgInCard = card ? card.querySelector('.weapon-visual img') as HTMLImageElement | null : null;
+      if (imgEl && imgInCard) {
+        imgEl.src = imgInCard.src;
+        imgEl.alt = currentWeapon.name;
+      }
+
+      if (dmgHeadEl) dmgHeadEl.textContent = currentWeapon.damage.head;
+      if (lethalHeadEl) {
+        const shots = Math.ceil(150 / currentWeapon.damage.head);
+        lethalHeadEl.textContent = currentWeapon.damage.head >= 150
+          ? (dict["gameplay.lethal"] || "Lethal (1-Shot Kill)")
+          : `${shots} ${dict["gameplay.shots"] || "Tembakan (150 HP)"}`;
+      }
+      if (dmgBodyEl) dmgBodyEl.textContent = currentWeapon.damage.body;
+      if (shotsBodyEl) {
+        const shots = Math.ceil(150 / currentWeapon.damage.body);
+        shotsBodyEl.textContent = `${shots} ${dict["gameplay.shots"] || "Tembakan (150 HP)"}`;
+      }
+      if (dmgLegEl) dmgLegEl.textContent = currentWeapon.damage.leg;
+      if (shotsLegEl) {
+        const shots = Math.ceil(150 / currentWeapon.damage.leg);
+        shotsLegEl.textContent = `${shots} ${dict["gameplay.shots"] || "Tembakan (150 HP)"}`;
+      }
+
+      const freeText = dict["gameplay.free"] || (lang === "en" ? "FREE" : "GRATIS");
+      const roundsText = dict["gameplay.rounds"] || (lang === "en" ? "Rounds" : "Peluru");
+
+      if (costEl) costEl.textContent = currentWeapon.cost > 0 ? `¤ ${currentWeapon.cost.toLocaleString()}` : freeText.toUpperCase();
+      if (fireRateEl) fireRateEl.textContent = `${currentWeapon.fireRate} rds/sec`;
+      if (magEl) magEl.textContent = currentWeapon.magazine > 0 ? `${currentWeapon.magazine} ${roundsText}` : "— (Melee)";
+      if (wallPenEl) wallPenEl.textContent = currentWeapon.wallPen;
+      if (rangeEl) rangeEl.textContent = currentWeapon.range;
+      if (fireModeEl) fireModeEl.textContent = currentWeapon.fireMode;
+    }
+
+    function renderComparison() {
+      if (!compareSelect || !currentWeapon) return;
+      const targetName = compareSelect.value;
+      if (!targetName) {
+        if (compResultBox) compResultBox.style.display = "none";
+        return;
+      }
+
+      const target = weaponsData.find((w: any) => w.name === targetName);
+      if (!target) return;
+
+      const dict = getDict();
+      const freeText = dict["gameplay.free"] || "Free";
+      const roundsText = dict["gameplay.rounds"] || "Rounds";
+
+      if (compBaseName) compBaseName.textContent = currentWeapon.name;
+      if (compTargetName) compTargetName.textContent = target.name;
+      if (thBase) thBase.textContent = currentWeapon.name;
+      if (thTarget) thTarget.textContent = target.name;
+
+      if (compPreviewBaseName) compPreviewBaseName.textContent = currentWeapon.name;
+      if (compPreviewBaseCat) compPreviewBaseCat.textContent = currentWeapon.category;
+      if (compPreviewTargetName) compPreviewTargetName.textContent = target.name;
+      if (compPreviewTargetCat) compPreviewTargetCat.textContent = target.category;
+
+      const baseCard = document.querySelector(`[data-weapon-name="${currentWeapon.name}"]`)?.closest('.weapon-card');
+      const baseImgInCard = baseCard ? baseCard.querySelector('.weapon-visual img') as HTMLImageElement | null : null;
+      if (compBaseImg && baseImgInCard) {
+        compBaseImg.src = baseImgInCard.src;
+        compBaseImg.alt = currentWeapon.name;
+      }
+
+      const targetCard = document.querySelector(`[data-weapon-name="${target.name}"]`)?.closest('.weapon-card');
+      const targetImgInCard = targetCard ? targetCard.querySelector('.weapon-visual img') as HTMLImageElement | null : null;
+      if (compTargetImg && targetImgInCard) {
+        compTargetImg.src = targetImgInCard.src;
+        compTargetImg.alt = target.name;
+      }
+
+      const metrics = [
+        {
+          label: dict["gameplay.metricCost"] || "Harga (Cost)",
+          base: currentWeapon.cost > 0 ? `¤ ${currentWeapon.cost.toLocaleString()}` : freeText,
+          target: target.cost > 0 ? `¤ ${target.cost.toLocaleString()}` : freeText,
+          better: currentWeapon.cost < target.cost ? "base" : currentWeapon.cost > target.cost ? "target" : "equal"
+        },
+        {
+          label: dict["gameplay.metricHead"] || "Damage Kepala",
+          base: currentWeapon.damage.head,
+          target: target.damage.head,
+          better: currentWeapon.damage.head > target.damage.head ? "base" : currentWeapon.damage.head < target.damage.head ? "target" : "equal"
+        },
+        {
+          label: dict["gameplay.metricBody"] || "Damage Badan",
+          base: currentWeapon.damage.body,
+          target: target.damage.body,
+          better: currentWeapon.damage.body > target.damage.body ? "base" : currentWeapon.damage.body < target.damage.body ? "target" : "equal"
+        },
+        {
+          label: dict["gameplay.metricLeg"] || "Damage Kaki",
+          base: currentWeapon.damage.leg,
+          target: target.damage.leg,
+          better: currentWeapon.damage.leg > target.damage.leg ? "base" : currentWeapon.damage.leg < target.damage.leg ? "target" : "equal"
+        },
+        {
+          label: dict["gameplay.metricFireRate"] || "Fire Rate",
+          base: `${currentWeapon.fireRate} rds/s`,
+          target: `${target.fireRate} rds/s`,
+          better: currentWeapon.fireRate > target.fireRate ? "base" : currentWeapon.fireRate < target.fireRate ? "target" : "equal"
+        },
+        {
+          label: dict["gameplay.metricMag"] || "Kapasitas Mag",
+          base: currentWeapon.magazine > 0 ? `${currentWeapon.magazine} ${roundsText}` : "— (Melee)",
+          target: target.magazine > 0 ? `${target.magazine} ${roundsText}` : "— (Melee)",
+          better: currentWeapon.magazine > target.magazine ? "base" : currentWeapon.magazine < target.magazine ? "target" : "equal"
+        },
+        {
+          label: dict["gameplay.metricWallPen"] || "Penetrasi Dinding",
+          base: currentWeapon.wallPen,
+          target: target.wallPen,
+          better: "equal"
+        },
+        {
+          label: dict["gameplay.metricRange"] || "Jarak Efektif",
+          base: currentWeapon.range,
+          target: target.range,
+          better: "equal"
+        },
+        {
+          label: dict["gameplay.metricFireMode"] || "Mode Tembak",
+          base: currentWeapon.fireMode,
+          target: target.fireMode,
+          better: "equal"
+        }
+      ];
+
+      if (tbody) {
+        tbody.innerHTML = metrics.map((m) => `
+          <tr>
+            <td class="compare-metric-name">${m.label}</td>
+            <td class="${m.better === 'base' ? 'compare-better' : m.better === 'target' ? 'compare-worse' : 'compare-equal'}">${m.base}</td>
+            <td class="${m.better === 'target' ? 'compare-better' : m.better === 'base' ? 'compare-worse' : 'compare-equal'}">${m.target}</td>
+          </tr>
+        `).join("");
+      }
+
+      if (compResultBox) compResultBox.style.display = "block";
+    }
+
+    function openWeapon(w: any) {
+      currentWeapon = w;
+      renderWeaponModal();
+
+      if (compareSelect) compareSelect.value = "";
+      if (compResultBox) compResultBox.style.display = "none";
+
+      modal!.showModal();
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      modal!.close();
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll<HTMLButtonElement>(".btn-inspect-weapon").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const weaponName = btn.dataset.weaponName;
+        const found = weaponsData.find((item: any) => item.name === weaponName);
+        if (found) openWeapon(found);
+      });
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach((el) => {
+      el.addEventListener("click", closeModal);
+    });
+
+    modal.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+
+    if (compareSelect) {
+      compareSelect.addEventListener("change", renderComparison);
+    }
+
+    window.addEventListener("langchange", () => {
+      if (modal.open) {
+        renderWeaponModal();
+        renderComparison();
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    setupFilters("senjata");
+    setupWeaponInspector();
+  });
+</script>
+
+

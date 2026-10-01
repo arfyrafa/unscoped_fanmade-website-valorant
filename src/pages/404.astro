@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="404 — Sektor Tidak Ditemukan" description="Halaman yang Anda tuju tidak terdaftar di mainframe protokol UNSCOPED.">
+  <div class="page-404-wrap">
+    <div class="radar-backdrop" aria-hidden="true">
+      <div class="radar-sweep"></div>
+    </div>
+
+    <div class="not-found-card" data-aos="zoom-in">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <span class="badge" style="border-color:var(--signal); color:var(--signal);">
+          <span class="dot" style="background:var(--signal); box-shadow:0 0 8px var(--signal);"></span>
+          <span data-i18n="error404.badge">STATUS: TERPUTUS // ERROR 404</span>
+        </span>
+        <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--cyan); letter-spacing:0.1em;">
+          GRID // 0xDEADBEEF
+        </span>
+      </div>
+
+      <div style="margin-top:20px;">
+        <div class="glitch-code">404</div>
+      </div>
+
+      <h1 style="margin-top:16px; font-size:clamp(1.6rem, 4vw, 2.3rem);" data-i18n="error404.title">
+        SECTOR BREACH: SINYAL TERPUTUS
+      </h1>
+
+      <p class="lede" style="margin-top:14px; font-size:1.02rem;" data-i18n="error404.desc">
+        Koordinat yang Anda tuju tidak terdaftar di mainframe UNSCOPED. Sektor ini mungkin telah dihancurkan, dipindahkan, atau mengalami anomali Spike.
+      </p>
+
+      <div class="telemetry-console">
+        <div><span class="key" data-i18n="error404.telemetryLabel">// TELEMETRI DARURAT:</span></div>
+        <div>ERROR_CODE : <span class="val">0x404_SECTOR_OUT_OF_BOUNDS</span></div>
+        <div>LATENCY    : <span class="val">999ms // PACKET_LOSS: 100%</span></div>
+        <div>LAST_BEACON: <span class="val">/protocol/unscoped</span></div>
+      </div>
+
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;">
+        <a href="/" class="btn btn-primary" data-i18n="error404.evacuate">
+          &larr; Evakuasi ke Home
+        </a>
+        <a href="/agents/" class="btn btn-ghost" data-i18n="error404.agents">
+          Inspeksi Agent
+        </a>
+        <button type="button" class="btn btn-ghost" onclick="history.back()" data-i18n="error404.prev">
+          Sektor Sebelumnya
+        </button>
+      </div>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,265 @@
+---
+import Base from "../layouts/Base.astro";
+
+// Angka dari halaman spesifikasi resmi Riot (cek ulang di support Riot sebelum submit).
+const specs = [
+  { tier: "Minimum", target: "30 FPS", cpu: "Intel Core 2 Duo E8400 / AMD Athlon 200GE", gpu: "Intel HD 4000 / Radeon R5 200", ram: "4 GB" },
+  { tier: "Recommended", target: "60 FPS", cpu: "Intel Core i3-4150 / AMD Ryzen 3 1200", gpu: "GeForce GT 730 / Radeon R7 240", ram: "4 GB" },
+  { tier: "High-End", target: "144+ FPS", cpu: "Intel Core i5-9400F / AMD Ryzen 5 2600X", gpu: "GeForce GTX 1050 Ti / Radeon R7 370", ram: "4 GB" },
+];
+---
+
+<Base title="Play Now" description="Cara mulai main Valorant lewat klien resmi Riot Games, plus spesifikasi PC yang dibutuhkan.">
+  <header class="container page-header-tactical" style="padding: 64px 24px 40px;">
+    <span class="header-bg-text" aria-hidden="true">DEPLOY<br />NOW</span>
+    <span class="badge"><span class="dot"></span> <span data-i18n="play.badge">Deploy</span></span>
+    <h1 style="margin-top:18px;" data-i18n="play.title">Play Now</h1>
+    <p class="eyebrow-line">CLIENT ACCESS // SYSTEM REQUIREMENTS</p>
+    <p class="lede" style="margin-top:14px;" data-i18n="play.lede">
+      Valorant gratis dimainkan lewat klien resmi Riot Games. Halaman ini mengarahkan pengunjung ke sana, bukan
+      menyediakan installer sendiri.
+    </p>
+  </header>
+
+  <section class="tight">
+    <div class="container hud-panel flex-between" data-aos="zoom-in">
+      <div>
+        <h2 style="font-size:clamp(1.5rem,3vw,2rem);" data-i18n="play.clientTitle">Download Klien Resmi</h2>
+        <p style="margin-top:8px;" data-i18n="play.clientDesc">Instalasi lewat situs resmi playvalorant.com, gratis untuk PC.</p>
+      </div>
+      <a href="https://playvalorant.com" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="common.officialSite">Buka Situs Resmi</a>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="container">
+      <div class="section-head">
+        <span class="index">// SPEC</span>
+        <h2 data-i18n="play.specTitle">Spesifikasi PC</h2>
+      </div>
+      <div class="grid-3">
+        {specs.map((s, i) => (
+          <article class="hud-card" data-aos="fade-up" data-aos-delay={i * 80}>
+            <h3>{s.tier}</h3>
+            <span class="spec-target">{s.target}</span>
+            <ul class="spec-list">
+              <li><b>CPU</b><span>{s.cpu}</span></li>
+              <li><b>GPU</b><span>{s.gpu}</span></li>
+              <li><b>RAM</b><span>{s.ram}</span></li>
+            </ul>
+          </article>
+        ))}
+      </div>
+      <p class="note" data-i18n="play.specNote">
+        Semua tier: Windows 10/11 64-bit. Anti-cheat Vanguard di Windows 11 butuh TPM 2.0 dan Secure Boot aktif.
+      </p>
+    </div>
+  </section>
+
+  <section class="tight" style="background: rgba(13, 21, 34, 0.65); border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="container">
+      <div class="section-head">
+        <span class="index">// STEPS</span>
+        <h2 data-i18n="play.stepsTitle">Mulai dalam 3 Langkah</h2>
+      </div>
+      <div class="grid-3">
+        <article class="hud-card" data-aos="fade-up">
+          <h3 data-i18n="play.step1Title">1. Unduh Klien</h3>
+          <p data-i18n="play.step1Desc">Buat akun Riot dan pasang klien Valorant.</p>
+        </article>
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="80">
+          <h3 data-i18n="play.step2Title">2. Selesaikan Tutorial</h3>
+          <p data-i18n="play.step2Desc">Pelajari kontrol dasar dan mekanik shooting.</p>
+        </article>
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="160">
+          <h3 data-i18n="play.step3Title">3. Masuk Ronde Pertama</h3>
+          <p data-i18n="play.step3Desc">Coba mode Unrated sebelum naik ke Competitive.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" id="dispatch-section">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <span class="index" data-i18n="play.dispatchIndex">// DISPATCH PROTOCOL</span>
+        <h2 data-i18n="play.dispatchTitle">Berlangganan Buletin Taktis</h2>
+        <p class="lede" style="margin-top:12px;" data-i18n="play.dispatchLede">
+          Daftarkan callsign Anda untuk menerima transmisi intelijen berkala: breakdown patch notes, analisis meta agent, dan jadwal siaran turnamen resmi UNSCOPED.
+        </p>
+      </div>
+
+      <div class="dispatch-wrap" data-aos="zoom-in">
+        <div class="dispatch-telemetry">
+          <span><span class="pulse-dot"></span> FREKUENSI // SECURE DISPATCH</span>
+          <span>ENKRIPSI // PROTOKOL 256-BIT</span>
+          <span>STATUS // ONLINE</span>
+        </div>
+
+        <form id="dispatch-form" class="dispatch-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="callsign" class="form-label">
+                <span data-i18n="play.dispatchCallsignLabel">Callsign / Riot ID</span>
+                <span class="required-indicator">*</span>
+              </label>
+              <input
+                type="text"
+                id="callsign"
+                name="callsign"
+                class="form-input"
+                placeholder="mis. Phoenix#IDN"
+                data-i18n-placeholder="play.placeholderCallsign"
+                required
+                autocomplete="nickname"
+              />
+              <span class="form-hint" data-i18n="play.dispatchCallsignHint">Format ID game atau nama panggilan Anda</span>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">
+                <span data-i18n="play.dispatchEmailLabel">Alamat Email</span>
+                <span class="required-indicator">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="agent@domain.com"
+                required
+                autocomplete="email"
+              />
+              <span class="form-hint" data-i18n="play.dispatchEmailHint">Transmisi akan dikirim ke alamat ini</span>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label for="region" class="form-label">
+                <span data-i18n="play.dispatchRegionLabel">Sektor Server Utama</span>
+                <span class="required-indicator">*</span>
+              </label>
+              <div class="select-wrapper">
+                <select id="region" name="region" class="form-select" required>
+                  <option value="" disabled selected data-i18n="play.dispatchRegionDefault">Pilih Sektor Server</option>
+                  <option value="Asia-Pacific (AP - Jakarta / Singapore)">Asia-Pacific (AP - Jakarta / Singapore)</option>
+                  <option value="North America (NA)">North America (NA)</option>
+                  <option value="Europe (EMEA)">Europe (EMEA)</option>
+                  <option value="Korea / Japan (KR/JP)">Korea / Japan (KR/JP)</option>
+                  <option value="Latin America / Brazil (LATAM/BR)">Latin America / Brazil (LATAM/BR)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-terms">
+            <label class="form-check">
+              <input type="checkbox" id="consent" name="consent" class="form-checkbox" required />
+              <span class="check-text" data-i18n="play.dispatchConsent">
+                Saya menyetujui penerimaan buletin berkala dan pembaruan patch intelijen UNSCOPED.
+              </span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-dispatch" id="dispatch-btn">
+              <span class="btn-text" data-i18n="play.dispatchSubmit">Kirim Transmisi</span>
+              <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+
+          <div id="dispatch-feedback" class="dispatch-feedback" role="status" aria-live="polite" hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { getLanguage, translations } from "../lib/i18n";
+
+  function initDispatchForm() {
+    const form = document.getElementById("dispatch-form") as HTMLFormElement | null;
+    if (!form || form.dataset.bound === "1") return;
+    form.dataset.bound = "1";
+
+    const feedback = document.getElementById("dispatch-feedback");
+    const submitBtn = document.getElementById("dispatch-btn") as HTMLButtonElement | null;
+
+    function getDict() {
+      const lang = getLanguage();
+      return translations[lang] || translations.id;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const callsignInput = form.querySelector<HTMLInputElement>("#callsign");
+      const emailInput = form.querySelector<HTMLInputElement>("#email");
+      const regionSelect = form.querySelector<HTMLSelectElement>("#region");
+      const consentCheck = form.querySelector<HTMLInputElement>("#consent");
+
+      const callsign = callsignInput?.value.trim() || "";
+      const email = emailInput?.value.trim() || "";
+      const region = regionSelect?.value || "";
+      const consented = consentCheck?.checked || false;
+
+      if (!feedback) return;
+      const dict = getDict();
+
+      if (!callsign || !email || !region || !consented) {
+        feedback.hidden = false;
+        feedback.className = "dispatch-feedback error";
+        feedback.innerHTML = `
+          <strong>${dict["play.formErrorRequired"] || "[PERINGATAN PROTOKOL] Mohon lengkapi semua bidang isian bertanda bintang dan centang persetujuan sebelum mengirim transmisi."}</strong>
+        `;
+        return;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        feedback.hidden = false;
+        feedback.className = "dispatch-feedback error";
+        feedback.innerHTML = `
+          <strong>${dict["play.formErrorEmail"] || "[FORMAT SALAH] Alamat email tidak valid. Pastikan format email benar (contoh: nama@domain.com)."}</strong>
+        `;
+        emailInput?.focus();
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = `<span>${dict["play.formProcessing"] || "MEMPROSES SINYAL..."}</span>`;
+
+        setTimeout(() => {
+          feedback.hidden = false;
+          feedback.className = "dispatch-feedback success";
+          const badgeText = dict["play.formSuccessBadge"] || "\u2713 TRANSMISI DITERIMA";
+          const msgText = dict["play.formSuccessMsg"] || "berhasil didaftarkan ke sektor";
+          const sentText = dict["play.formSuccessSent"] || "Salinan intelijen operasional perdana telah dikirimkan ke";
+          feedback.innerHTML = `
+            <div class="feedback-head">
+              <span class="feedback-badge">${badgeText}</span>
+              <span class="feedback-time">FREQ // 142.85 MHZ</span>
+            </div>
+            <p>
+              Callsign <strong>${callsign}</strong> ${msgText} <strong>${region}</strong>. ${sentText} <strong>${email}</strong>.
+            </p>
+          `;
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }, 500);
+      }
+    });
+  }
+
+  initDispatchForm();
+  document.addEventListener("astro:page-load", initDispatchForm);
+
+  window.addEventListener("langchange", () => {
+    const form = document.getElementById("dispatch-form") as HTMLFormElement | null;
+    if (form) form.dataset.bound = "";
+    initDispatchForm();
+  });
+</script>

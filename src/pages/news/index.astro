@@ -1,0 +1,85 @@
+---
+import { Image } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import { news } from "../../data/news";
+import { img } from "../../lib/img";
+import "../../styles/news.css";
+
+const categories = [...new Set(news.map((n) => n.category))];
+const [featuredNews, ...restNews] = news;
+---
+
+<Base title="News & Event" description="Patch, skin, event, dan Esports Valorant terbaru, dirangkum di UNSCOPED." bodyClass="page-news">
+  <header class="container" style="padding: 64px 24px 40px; position: relative; overflow: hidden;">
+    <span class="header-bg-text" aria-hidden="true">LATEST<br />UPDATE</span>
+    <span class="badge"><span class="dot pulse-dot"></span> <span data-i18n="news.liveFeed">Live Feed</span></span>
+    <h1 style="margin-top:18px;" data-i18n="news.title">News &amp; Event</h1>
+    <p class="eyebrow-line" data-i18n="news.eyebrow">FRAG OR DIE: INTEL TERBARU DARI MEDAN TEMPUR</p>
+    <p class="lede" style="margin-top:14px;" data-i18n="news.lede">
+      Dari patch terbaru, skin yang lagi hype, sampai panggung Esports dunia, semua update VALORANT ngumpul di satu
+      tempat. Klik tiap kartu buat baca ceritanya lebih lengkap.
+    </p>
+  </header>
+
+  <section class="tight">
+    <div class="container">
+      <div class="filter-bar" role="group" aria-label="Filter kategori berita" data-i18n-aria="news.filterAria" data-filter-group="news">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true"><span data-i18n="common.filterAll">Semua</span> <span class="count">{news.length}</span></button>
+        {categories.map((c) => (
+          <button class="chip" type="button" data-filter={c} aria-pressed="false">
+            {c} <span class="count">{news.filter((n) => n.category === c).length}</span>
+          </button>
+        ))}
+      </div>
+      <p class="filter-status" aria-live="polite" data-filter-status></p>
+
+      {featuredNews && (
+        <a
+          class="hud-card featured-news-card"
+          href={`/news/${featuredNews.slug}/`}
+          data-filter-item
+          data-value={featuredNews.category}
+          data-aos="fade-up"
+        >
+          <div class="featured-news-img-wrap">
+            <Image
+              src={img(featuredNews.cover)}
+              alt=""
+              class="hud-card-img"
+              width={960}
+              loading="eager"
+              transition:name={`news-${featuredNews.slug}`}
+            />
+          </div>
+          <div class="featured-news-content">
+            <span class="badge" style="margin-bottom:14px; align-self: flex-start;">{featuredNews.category}</span>
+            <h2>{featuredNews.title}</h2>
+            <p class="news-date">{featuredNews.date}</p>
+            <p class="news-summary">{featuredNews.summary}</p>
+            <span class="read-more" data-i18n="common.readMoreArrow">Baca selengkapnya &rarr;</span>
+          </div>
+        </a>
+      )}
+
+      <div class="grid-3 news-grid">
+        {restNews.map((n, i) => (
+          <a class="hud-card" href={`/news/${n.slug}/`} data-filter-item data-value={n.category} data-aos="fade-up" data-aos-delay={(i % 3) * 80}>
+            <div class="hud-card-img-wrap">
+              <Image src={img(n.cover)} alt="" class="hud-card-img" width={720} loading={i < 2 ? "eager" : "lazy"} transition:name={`news-${n.slug}`} />
+            </div>
+            <span class="badge" style="margin-bottom:14px;">{n.category}</span>
+            <h3>{n.title}</h3>
+            <p style="font-size:.85rem; color:var(--cyan); margin-bottom:8px;">{n.date}</p>
+            <p>{n.summary}</p>
+            <span class="read-more" data-i18n="common.readMoreArrow">Baca selengkapnya &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { setupFilters } from "../../lib/filter";
+  document.addEventListener("astro:page-load", () => setupFilters("berita"));
+</script>

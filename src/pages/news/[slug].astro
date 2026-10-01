@@ -1,0 +1,116 @@
+---
+import { Image, getImage } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import { news, type NewsItem } from "../../data/news";
+import { img } from "../../lib/img";
+import "../../styles/news.css";
+import "../../styles/news-detail.css";
+
+export function getStaticPaths() {
+  return news.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+interface Props { item: NewsItem }
+const { item } = Astro.props;
+const paragraphs = item.body.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const cover = img(item.cover);
+const og = await getImage({ src: cover, width: 1200, format: "jpeg" });
+const gallery = await Promise.all(
+  item.gallery.map(async (path) => ({ path, full: await getImage({ src: img(path), width: 1600, format: "webp" }) })),
+);
+const more = news.filter((n) => n.slug !== item.slug && n.category === item.category).slice(0, 3);
+---
+
+<Base title={item.title} description={item.summary} image={og.src}>
+  <div id="newsHero" class="news-hero">
+    <Image src={cover} alt="" class="hero-bg" width={1600} loading="eager" fetchpriority="high" transition:name={`news-${item.slug}`} />
+    <div class="news-hero-inner container">
+      <a href="/news/" class="news-hero-back" data-i18n="news.backToNews">&larr; Kembali ke News</a>
+      <span class="badge">{item.category}</span>
+      <h1>{item.title}</h1>
+      <p class="news-hero-date">{item.date}</p>
+    </div>
+  </div>
+
+  <section class="news-detail-body">
+    <div class="news-watermark" aria-hidden="true"><span>VALO</span><span>RANT</span></div>
+    <div class="container news-detail-layout">
+      <div class="news-detail-text">
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+      {gallery.length > 0 && (
+        <aside class="news-detail-side" aria-label="Galeri foto" data-i18n-aria="news.galleryAria">
+          <div class="news-gallery-grid">
+            {gallery.map((g, i) => (
+              <button class="gallery-item" type="button" aria-label="Perbesar foto" data-i18n-aria="news.zoomAria" data-full={g.full.src}>
+                <Image src={img(g.path)} alt={`${item.title}, foto ${i + 1}`} width={600} />
+              </button>
+            ))}
+          </div>
+        </aside>
+      )}
+    </div>
+
+    {more.length > 0 && (
+      <div class="container news-more">
+        <div class="section-head"><span class="index">// {item.category}</span><h2 data-i18n="news.relatedTitle">Berita terkait</h2></div>
+        <div class="grid-3">
+          {more.map((n) => (
+            <a class="hud-card" href={`/news/${n.slug}/`}>
+              <div class="hud-card-img-wrap">
+                <Image src={img(n.cover)} alt="" class="hud-card-img" width={720} transition:name={`news-${n.slug}`} />
+              </div>
+              <h3>{n.title}</h3>
+              <p style="font-size:.85rem; color:var(--cyan); margin:8px 0 0;">{n.date}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+
+  <div class="lightbox-overlay" id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Foto diperbesar" data-i18n-aria="news.lightboxAria">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Tutup" data-i18n-aria="news.close">&times;</button>
+      <img id="lightboxImg" src="" alt="" />
+    </div>
+  </div>
+</Base>
+
+<script>
+  function setupLightbox() {
+    const overlay = document.getElementById("lightboxOverlay");
+    const closeBtn = document.getElementById("lightboxClose");
+    const big = document.getElementById("lightboxImg") as HTMLImageElement | null;
+    if (!overlay || !closeBtn || !big || overlay.dataset.bound) return;
+    overlay.dataset.bound = "1";
+    let opener: HTMLElement | null = null;
+
+    const close = () => {
+      overlay.classList.remove("is-open");
+      document.body.style.overflow = "";
+      opener?.focus();
+    };
+
+    document.querySelectorAll<HTMLButtonElement>(".gallery-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        opener = btn;
+        const thumb = btn.querySelector("img");
+        big.src = btn.dataset.full || thumb?.src || "";
+        big.alt = thumb?.alt || "";
+        overlay.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+        closeBtn.focus();
+      });
+    });
+    closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape" && overlay.classList.contains("is-open")) close(); };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("astro:before-swap", () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    }, { once: true });
+  }
+  document.addEventListener("astro:page-load", setupLightbox);
+</script>

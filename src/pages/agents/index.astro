@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import { agents, roles } from "../../data/agents";
+import { agentImg } from "../../lib/img";
+import "../../styles/agent-roster.css";
+
+const counts = Object.fromEntries(roles.map((r) => [r, agents.filter((a) => a.role === r).length]));
+---
+
+<Base title="Agent" description="Kenali semua Agent Valorant lewat showcase non-resmi UNSCOPED." bodyClass="agent-roster-page">
+  <header class="agents-hero">
+    <div class="container agents-hero-inner">
+      <div class="agents-hero-copy">
+        <p class="agents-kicker" data-i18n="agents.kicker">MEET THE</p>
+        <h1 class="agents-title" data-i18n="agents.title">AGENTS</h1>
+        <p class="agents-subtitle" data-i18n="agents.subtitle">Skills create opportunities. Agents make history.</p>
+      </div>
+      <div class="agents-hero-side">
+        <span data-i18n="agents.side1">DIFFERENT PLAYSTYLES</span>
+        <span data-i18n="agents.side2">ONE VICTORY</span>
+      </div>
+    </div>
+    <div class="agents-watermark" aria-hidden="true">AGENTS</div>
+  </header>
+
+  <section class="tight">
+    <div class="container">
+      <div class="roster-search-bar" data-aos="fade-up">
+        <div class="roster-search-box">
+          <span class="roster-search-icon" aria-hidden="true">&#9906;</span>
+          <label for="agent-search" class="sr-only" data-i18n="agents.searchLabel">Cari Agent</label>
+          <input
+            type="search"
+            id="agent-search"
+            class="roster-search-input"
+            data-filter-search
+            data-i18n-placeholder="agents.searchPlaceholder"
+            placeholder="Cari agent (contoh: Jett, Omen, Viper)..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+      </div>
+
+      <div class="filter-bar" role="group" aria-label="Filter berdasarkan role" data-filter-group="role">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">
+          <span data-i18n="common.filterAll">Semua</span> <span class="count">{agents.length}</span>
+        </button>
+        {roles.map((r) => (
+          <button class="chip" type="button" data-filter={r} data-role={r} aria-pressed="false">
+            {r} <span class="count">{counts[r]}</span>
+          </button>
+        ))}
+      </div>
+      <p class="filter-status" aria-live="polite" data-filter-status></p>
+
+      <div class="agents-grid">
+        {agents.map((a, i) => (
+          <a
+            href={`/agents/${a.slug}/`}
+            class:list={["agent-tile", `role-${a.role.toLowerCase()}`]}
+            data-filter-item
+            data-value={a.role}
+            data-name={a.name.toLowerCase()}
+            aria-label={`Lihat profil agent ${a.name}`}
+            data-i18n-aria-agent
+            data-agent-name={a.name}
+          >
+            <div class="agent-portrait">
+              <Image
+                src={agentImg(a.image)}
+                alt={a.name}
+                width={480}
+                loading={i < 8 ? "eager" : "lazy"}
+                transition:name={`agent-${a.slug}`}
+              />
+              <div class="agent-desc-pop">
+                <p data-i18n={`agent.short.${a.slug}`}>{a.short}</p>
+              </div>
+            </div>
+            <div class="agent-meta">
+              <h3 class="agent-name">{a.name}</h3>
+              <span class="badge role-badge">{a.role}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { setupFilters } from "../../lib/filter";
+  document.addEventListener("astro:page-load", () => setupFilters("Agent"));
+</script>

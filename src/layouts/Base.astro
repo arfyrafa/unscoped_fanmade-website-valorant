@@ -1,0 +1,126 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/style.css";
+import "../styles/extra.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  bodyClass?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description = "Showcase non-resmi bertema Valorant. Fan project untuk Lomba Web Development 2026 (IT FEST), bukan situs resmi Riot Games.",
+  bodyClass = "",
+  image,
+} = Astro.props;
+
+const fullTitle = title ? `${title} | UNSCOPED` : "UNSCOPED | Valorant Fan Showcase";
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const resolvedImage = image || "/og-image.jpg";
+const ogImage = Astro.site ? new URL(resolvedImage, Astro.site).href : resolvedImage;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0A0E12" />
+    <meta name="author" content="UNSCOPED Team - IT FEST 2026" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta property="og:site_name" content="UNSCOPED" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>document.documentElement.classList.add("js");</script>
+    <ClientRouter />
+  </head>
+
+  <body class={bodyClass}>
+    <a class="skip-link" href="#konten" data-i18n="nav.skip">Lewati ke konten</a>
+    <Nav />
+    <main id="konten">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import { setupI18n } from "../lib/i18n";
+
+      // Dijalankan ulang setiap pindah halaman (View Transitions).
+      function setupNav() {
+        const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+        const links = document.querySelector(".nav-links");
+        if (!toggle || !links) return;
+        toggle.addEventListener("click", () => {
+          const open = links.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", String(open));
+        });
+      }
+
+      function bootIn() {
+        requestAnimationFrame(() => {
+          setTimeout(() => document.querySelectorAll(".boot").forEach((el) => el.classList.add("in")), 80);
+        });
+      }
+
+      // Pengganti AOS: animasi muncul saat di-scroll, tanpa library eksternal.
+      function reveal() {
+        const els = document.querySelectorAll<HTMLElement>("[data-aos]:not(.aos-animate)");
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce || !("IntersectionObserver" in window)) {
+          els.forEach((el) => el.classList.add("aos-animate"));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+              const delay = el.dataset.aosDelay;
+              if (delay) el.style.transitionDelay = `${Math.min(Number(delay), 400)}ms`;
+              el.classList.add("aos-animate");
+              io.unobserve(el);
+            });
+          },
+          { rootMargin: "0px 0px -60px 0px" },
+        );
+        els.forEach((el) => io.observe(el));
+      }
+
+      document.addEventListener("astro:page-load", () => {
+        setupI18n();
+        setupNav();
+        bootIn();
+        reveal();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="About"
+  description="Tentang proyek UNSCOPED, arsitektur teknologi, dan tim pengembang untuk kompetisi IT FEST 2026."
+  bodyClass="page-about"
+>
+  <header class="container page-header-tactical" style="padding: 64px 24px 40px;">
+    <span class="header-bg-text" aria-hidden="true">SYSTEM<br />DOSSIER</span>
+    <span class="badge"><span class="dot"></span> <span data-i18n="about.badge">System Dossier // IT FEST 2026</span></span>
+    <h1 style="margin-top:18px;" data-i18n="about.title">About UNSCOPED</h1>
+    <p class="eyebrow-line">MISSION REPORT // COMPETITION SPECIFICATION</p>
+    <p class="lede" style="margin-top:14px;" data-i18n="about.lede">
+      Showcase interaktif bertema Tactical HUD untuk VALORANT. Dibangun secara mandiri untuk kompetisi Web Development IT FEST 2026 tanpa menggunakan CMS atau template jadi secara utuh.
+    </p>
+  </header>
+
+  <section class="tight">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <span class="index">// 01 CONCEPT</span>
+        <h2 data-i18n="about.conceptTitle">Konsep &amp; Standar Kualitas</h2>
+      </div>
+      <div class="grid-3">
+        <article class="hud-card" data-aos="fade-up">
+          <h3 data-i18n="about.card1Title">100% Orisinal Tanpa Template</h3>
+          <p data-i18n="about.card1Desc">
+            Seluruh komponen antarmuka, tata letak, dan palet warna dirancang dari nol menggunakan Vanilla CSS dan semantic HTML. Mematuhi ketat ketentuan lomba yang melarang penggunaan template premium utuh.
+          </p>
+        </article>
+
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="80">
+          <h3 data-i18n="about.card2Title">Aksesibilitas &amp; Antislop</h3>
+          <p data-i18n="about.card2Desc">
+            Memenuhi standar rasio kontras warna WCAG, navigasi keyboard ramah pengguna, target sentuh interaktif minimal 44px, serta teks informatif yang bersih tanpa filler generik.
+          </p>
+        </article>
+
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="160">
+          <h3 data-i18n="about.card3Title">Responsivitas Multi-Device</h3>
+          <p data-i18n="about.card3Desc">
+            Dioptimalkan secara presisi untuk berbagai resolusi layar: smartphone layar kecil, tablet, hingga monitor desktop ultra-wide dengan fluid typography dan grid adaptif.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" style="background: rgba(13, 21, 34, 0.65); border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <span class="index">// 02 STACK</span>
+        <h2 data-i18n="about.stackTitle">Arsitektur Teknologi</h2>
+      </div>
+
+      <div class="grid-3">
+        <article class="hud-card" data-aos="fade-up">
+          <span class="badge" style="align-self:flex-start; margin-bottom:10px;">FRAMEWORK</span>
+          <h3>Astro 5</h3>
+          <p data-i18n="about.stackAstroDesc">
+            Menghasilkan halaman statis berkecepatan tinggi dengan arsitektur Islands. Nol JavaScript yang tidak perlu pada browser untuk kecepatan muat instan.
+          </p>
+        </article>
+
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="80">
+          <span class="badge" style="align-self:flex-start; margin-bottom:10px;">TYPING &amp; DATA</span>
+          <h3>TypeScript</h3>
+          <p data-i18n="about.stackTsDesc">
+            Struktur data statis bertipe ketat untuk database 29 Agent, abilities, peta, berita, dan modul translasi dwi-bahasa (i18n).
+          </p>
+        </article>
+
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="160">
+          <span class="badge" style="align-self:flex-start; margin-bottom:10px;">STYLING</span>
+          <h3>Custom Tactical CSS</h3>
+          <p data-i18n="about.stackCssDesc">
+            Sistem desain modular Tactical HUD murni (CSS Variables, polygon clip-paths, scanlines keyframes) tanpa ketergantungan library CSS pihak ketiga.
+          </p>
+        </article>
+      </div>
+
+      <div class="grid-2" style="margin-top:24px;">
+        <article class="hud-card" data-aos="fade-up">
+          <span class="badge" style="align-self:flex-start; margin-bottom:10px;">TRANSITIONS</span>
+          <h3>Astro ClientRouter</h3>
+          <p data-i18n="about.stackTransitionDesc">
+            Perpindahan antar halaman terasa seperti Single Page Application yang mulus tanpa kedip, dengan View Transitions API bawaan.
+          </p>
+        </article>
+
+        <article class="hud-card" data-aos="fade-up" data-aos-delay="80">
+          <span class="badge" style="align-self:flex-start; margin-bottom:10px;">LOCALIZATION</span>
+          <h3>Dual-Language Engine</h3>
+          <p data-i18n="about.stackI18nDesc">
+            Sistem dwi-bahasa instan (ID / EN) berbasis localStorage yang mengupdate seluruh UI, form, dan navigasi secara real-time tanpa reload halaman.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="container">
+      <div class="section-head" data-aos="fade-up">
+        <span class="index">// 03 DOSSIER</span>
+        <h2 data-i18n="about.dossierTitle">Informasi Tim &amp; Proyek</h2>
+      </div>
+
+      <div class="hud-panel" data-aos="zoom-in" style="max-width:960px; margin:0 auto; padding:28px;">
+        <div class="dispatch-telemetry">
+          <span><span class="pulse-dot"></span> PROJECT // UNSCOPED SHOWCASE</span>
+          <span>COMPETITION // IT FEST 2026</span>
+          <span>STATUS // EVALUATION READY</span>
+        </div>
+
+        <div class="dossier-grid">
+          <div class="dossier-cell">
+            <span class="dossier-cell-tag" data-i18n="about.dossierCatLabel">Kategori Lomba</span>
+            <p class="dossier-cell-val" data-i18n="about.dossierCatVal">Web Development Competition — IT FEST 2026</p>
+          </div>
+
+          <div class="dossier-cell">
+            <span class="dossier-cell-tag" data-i18n="about.dossierFocusLabel">Fokus Karya</span>
+            <p class="dossier-cell-val" data-i18n="about.dossierFocusVal">Game Showcase &amp; Interactive Promotional Hub</p>
+          </div>
+
+          <div class="dossier-cell">
+            <span class="dossier-cell-tag" data-i18n="about.dossierOrigLabel">Deklarasi Orisinalitas</span>
+            <p class="dossier-cell-val" data-i18n="about.dossierOrigVal">100% Bebas CMS, Bebas Template Jadi</p>
+          </div>
+        </div>
+
+        <div style="margin-top:28px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); font-size:0.86rem; color:var(--paper-dim); line-height:1.6;">
+          <strong style="color:var(--paper);" data-i18n="about.copyrightLabel">Pemberitahuan Hak Cipta:</strong> <span data-i18n="about.copyrightText">Proyek non-komersial ini dibuat untuk keperluan akademik dan kompetisi. Seluruh aset grafis, karakter, lore, dan materi VALORANT merupakan hak cipta milik <strong>Riot Games, Inc.</strong> di bawah kebijakan <em>"Legal Jibber Jabber"</em>.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
