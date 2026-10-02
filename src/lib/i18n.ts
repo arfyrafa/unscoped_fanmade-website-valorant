@@ -265,6 +265,24 @@ export const translations: Record<Lang, Record<string, string>> = {
     "about.dossierOrigLabel": "Deklarasi Orisinalitas",
     "about.dossierOrigVal": "100% Bebas CMS, Bebas Template Jadi",
 
+    // Legal & Attribution (Notulensi TM Lomba 2026)
+    "about.legalTitle": "Kepatuhan Hak Cipta & Lisensi Aset",
+    "about.legalLede": "Dokumentasi transparansi kepatuhan hak cipta dan lisensi penggunaan aset pihak ketiga sesuai dengan Butir 1 - 6 Notulensi Technical Meeting Lomba Web Development IT FEST 2026.",
+    "about.legalAsset1Title": "Aset Game & Lore Valorant",
+    "about.legalAsset1Owner": "Pemegang Hak Cipta: Riot Games, Inc.",
+    "about.legalAsset1Status": "Digunakan di bawah kebijakan resmi fan content \"Legal Jibber Jabber\" Riot Games murni untuk proyek edukasi dan kompetisi non-komersial. Tidak berafiliasi atau disponsori oleh Riot Games.",
+    "about.legalAsset1Link": "Kebijakan Riot Games",
+    "about.legalAsset2Title": "Font Chakra Petch & Inter",
+    "about.legalAsset2Owner": "Lisensi: SIL Open Font License v1.1",
+    "about.legalAsset2Status": "Dilisensikan via Google Fonts. 100% legal, bebas royalti, dan diizinkan penuh untuk implementasi web dan perangkat lunak.",
+    "about.legalAsset2Link": "Lisensi Font Google",
+    "about.legalAsset3Title": "Framework & Kode Sumber",
+    "about.legalAsset3Owner": "Astro (MIT) & TypeScript (Apache 2.0)",
+    "about.legalAsset3Status": "Seluruh CSS desain sistem Tactical HUD dan interaktivitas JavaScript dibangun 100% dari nol secara mandiri tanpa template jadi atau CSS framework pihak ketiga.",
+    "about.legalAsset3Link": "Repositori GitHub",
+    "about.legalStatementTitle": "Pernyataan Integritas & Tanggung Jawab Peserta",
+    "about.legalStatementText": "Peserta bertanggung jawab penuh atas legalitas seluruh aset yang dicantumkan dalam proyek ini. Seluruh aset non-orisinal telah memiliki atribusi yang sah dan digunakan semata-mata sebagai materi peragaan non-profit dalam Lomba Web Development 2026.",
+
     // 404 Page
     "error404.badge": "STATUS: TERPUTUS // ERROR 404",
     "error404.title": "SECTOR BREACH: SINYAL TERPUTUS",
@@ -754,6 +772,24 @@ export const translations: Record<Lang, Record<string, string>> = {
     "about.dossierFocusVal": "Game Showcase & Interactive Promotional Hub",
     "about.dossierOrigLabel": "Originality Declaration",
     "about.dossierOrigVal": "100% Free of CMS, Free of Pre-made Templates",
+
+    // Legal & Attribution (Notulensi TM Lomba 2026)
+    "about.legalTitle": "Asset Attribution & Legal Compliance",
+    "about.legalLede": "Documentation of copyright compliance and third-party asset licensing in accordance with Items 1 - 6 of the IT FEST 2026 Web Development Technical Meeting.",
+    "about.legalAsset1Title": "Valorant Game Assets & Lore",
+    "about.legalAsset1Owner": "Copyright Holder: Riot Games, Inc.",
+    "about.legalAsset1Status": "Officially permitted under Riot Games' \"Legal Jibber Jabber\" fan content policy strictly for non-commercial educational and competition purposes. Not affiliated with or endorsed by Riot Games.",
+    "about.legalAsset1Link": "Riot Games Policy",
+    "about.legalAsset2Title": "Chakra Petch & Inter Fonts",
+    "about.legalAsset2Owner": "License: SIL Open Font License v1.1",
+    "about.legalAsset2Status": "Licensed via Google Fonts. 100% legal, royalty-free, and authorized for digital software and web deployment.",
+    "about.legalAsset2Link": "Google Fonts License",
+    "about.legalAsset3Title": "Framework & Source Code",
+    "about.legalAsset3Owner": "Astro (MIT) & TypeScript (Apache 2.0)",
+    "about.legalAsset3Status": "All Tactical HUD CSS design systems and JavaScript interactions were built 100% custom from scratch without pre-made templates or third-party CSS frameworks.",
+    "about.legalAsset3Link": "GitHub Repository",
+    "about.legalStatementTitle": "Participant Integrity & Compliance Statement",
+    "about.legalStatementText": "The participant holds full responsibility for the legality of all assets showcased in this project. All third-party assets carry legitimate attribution and are utilized strictly as non-profit demonstrative material for the 2026 Web Development Competition.",
 
     // 404 Page
     "error404.badge": "STATUS: COMPROMISED // ERROR 404",

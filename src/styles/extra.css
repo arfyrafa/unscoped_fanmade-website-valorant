@@ -1567,6 +1567,53 @@ a.agent-card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px
   line-height: 1.45;
 }
 
+/* ---------- Legal & Attribution Cards (About Page) ---------- */
+.legal-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.legal-badge-verified {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  background: rgba(45, 212, 191, 0.12);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+.legal-owner {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--cyan);
+  margin: 6px 0 12px;
+  font-weight: 600;
+}
+
+.legal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.legal-link:hover {
+  color: var(--cyan);
+  transform: translateX(3px);
+}
+
 /* ---------- Home: Tactical Roster Action Banner ---------- */
 .roster-cta-strip {
   display: flex;
