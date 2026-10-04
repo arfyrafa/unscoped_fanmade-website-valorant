@@ -744,6 +744,307 @@ a.agent-card:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px
 .map-card details[open] + .map-lede,
 .map-card .map-lede.full { -webkit-line-clamp: unset; }
 
+/* ---------- Map Card: interactive states ---------- */
+.map-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  border: 1px solid var(--ink-line);
+}
+.map-card:hover,
+.map-card:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(0, 240, 255, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 240, 255, 0.1);
+}
+.map-card:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.map-card .map-img {
+  position: relative;
+}
+
+.map-img-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  background: linear-gradient(0deg, rgba(6, 10, 16, 0.7) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.map-card:hover .map-img-overlay,
+.map-card:focus-visible .map-img-overlay {
+  opacity: 1;
+}
+
+.map-badge-site {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: rgba(0, 240, 255, 0.18);
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  padding: 4px 10px;
+}
+
+.map-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.map-title-row h3 {
+  margin: 0;
+}
+.map-location-sub {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--paper-dim);
+  letter-spacing: 0.04em;
+}
+
+.map-action-bar {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ink-line);
+}
+.btn-inspect-map {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+.btn-inspect-map .arrow {
+  transition: transform 0.25s ease;
+}
+.map-card:hover .btn-inspect-map {
+  color: #FFFFFF;
+}
+.map-card:hover .btn-inspect-map .arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- Map Dossier Modal: interior ---------- */
+.map-modal .map-modal-img-wrap {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+.map-modal .map-modal-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: none;
+}
+
+.map-modal-loc-banner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 16px;
+  background: linear-gradient(0deg, rgba(6, 10, 16, 0.9) 0%, rgba(6, 10, 16, 0.4) 60%, transparent 100%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.loc-pin {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.map-pro-tip {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-left: 3px solid var(--cyan);
+}
+.map-pro-tip .tip-badge {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--cyan);
+  margin-bottom: 8px;
+}
+.map-pro-tip .tip-text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--paper-dim);
+}
+
+/* Map Intel specs grid */
+.map-intel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.map-intel-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: rgba(6, 10, 16, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.intel-label {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: #94A3B8;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.intel-val {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+/* Callout chips */
+.map-callout-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.callout-chip {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 10px;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.callout-chip:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  background: rgba(0, 240, 255, 0.08);
+}
+
+/* Recommended agent pills */
+.map-agent-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font-display);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.agent-pill:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+}
+.agent-pill-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.04em;
+}
+.agent-pill-role {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.agent-pill.role-duelist {
+  border-color: rgba(255, 84, 115, 0.35);
+}
+.agent-pill.role-duelist:hover {
+  border-color: rgba(255, 84, 115, 0.7);
+  box-shadow: 0 0 12px rgba(255, 84, 115, 0.15);
+}
+.agent-pill.role-duelist .agent-pill-role { color: #ff5473; }
+
+.agent-pill.role-initiator {
+  border-color: rgba(59, 162, 255, 0.35);
+}
+.agent-pill.role-initiator:hover {
+  border-color: rgba(59, 162, 255, 0.7);
+  box-shadow: 0 0 12px rgba(59, 162, 255, 0.15);
+}
+.agent-pill.role-initiator .agent-pill-role { color: #3ba2ff; }
+
+.agent-pill.role-controller {
+  border-color: rgba(22, 239, 177, 0.35);
+}
+.agent-pill.role-controller:hover {
+  border-color: rgba(22, 239, 177, 0.7);
+  box-shadow: 0 0 12px rgba(22, 239, 177, 0.15);
+}
+.agent-pill.role-controller .agent-pill-role { color: #16efb1; }
+
+.agent-pill.role-sentinel {
+  border-color: rgba(175, 117, 255, 0.35);
+}
+.agent-pill.role-sentinel:hover {
+  border-color: rgba(175, 117, 255, 0.7);
+  box-shadow: 0 0 12px rgba(175, 117, 255, 0.15);
+}
+.agent-pill.role-sentinel .agent-pill-role { color: #af75ff; }
+
+/* Map Intel block spacing */
+.map-intel-block {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .map-intel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-card .map-body {
+    padding: 14px 16px 18px;
+  }
+  .map-title-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
 /* ---------- Play: spesifikasi ---------- */
 .spec-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 10px; }
 .spec-list li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; font-size: 0.92rem; color: var(--paper-dim); border-top: 1px solid var(--ink-line); padding-top: 10px; }

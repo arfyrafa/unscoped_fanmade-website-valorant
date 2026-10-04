@@ -1,11 +1,15 @@
 ---
 import { navLinks, isActive } from "./links";
+import LogoMark from "./LogoMark.astro";
 const path = Astro.url.pathname;
 ---
 
 <nav class="nav" aria-label="Navigasi utama">
   <div class="nav-inner">
-    <a href="/" class="nav-mark"><span class="dot"></span> UNSCOPED</a>
+    <a href="/" class="nav-mark" aria-label="UNSCOPED - Home">
+      <LogoMark size={22} />
+      <span>UNSCOPED</span>
+    </a>
 
     <ul class="nav-links" id="nav-links">
       {navLinks.map((l) => (
@@ -19,9 +23,20 @@ const path = Astro.url.pathname;
           </a>
         </li>
       ))}
+      <li class="nav-links-mobile-cta">
+        <a
+          href="/play/"
+          data-i18n="nav.play"
+          aria-current={isActive("/play/", path) ? "page" : undefined}
+        >
+          Play Now
+        </a>
+      </li>
     </ul>
 
     <div class="nav-actions">
+      <a href="/play/" class="nav-cta" data-i18n="nav.play">Play Now</a>
+
       <div class="lang-switch" role="group" aria-label="Pilih Bahasa / Select Language">
         <button
           type="button"

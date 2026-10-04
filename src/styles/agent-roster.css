@@ -32,45 +32,81 @@
 }
 
 /* Agent Tile Card */
+/* Role colors & glow */
+.agent-tile.role-duelist {
+  --role-color: #ff4655;
+  --role-glow: rgba(255, 70, 85, 0.5);
+}
+.agent-tile.role-initiator {
+  --role-color: #3ba2ff;
+  --role-glow: rgba(59, 162, 255, 0.5);
+}
+.agent-tile.role-controller {
+  --role-color: #16efb1;
+  --role-glow: rgba(22, 239, 177, 0.5);
+}
+.agent-tile.role-sentinel {
+  --role-color: #af75ff;
+  --role-glow: rgba(175, 117, 255, 0.5);
+}
+
+/* Agent Tile Card */
 .agent-tile {
   display: flex;
   flex-direction: column;
   position: relative;
   background: var(--ink-raised);
   border: 1px solid var(--ink-line);
-  border-bottom: 2px solid var(--role-color, var(--cyan));
+  border-bottom: 3px solid var(--role-color, var(--cyan));
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.28s ease,
+              background 0.25s ease;
   min-height: unset !important;
   border-radius: 0 !important;
   padding: 0 !important;
 }
 
-.agent-tile::before,
+/* Corner tactical indicator on hover */
 .agent-tile::after {
-  content: none !important;
-  display: none !important;
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 28px 28px 0;
+  border-color: transparent var(--role-color) transparent transparent;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 4;
+  pointer-events: none;
 }
-
-/* Role colors */
-.agent-tile.role-duelist { --role-color: #ff5473; }
-.agent-tile.role-initiator { --role-color: #3ba2ff; }
-.agent-tile.role-controller { --role-color: #16efb1; }
-.agent-tile.role-sentinel { --role-color: #af75ff; }
 
 .agent-tile:hover,
 .agent-tile:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--role-color, var(--cyan));
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  border-color: var(--role-color);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65), 0 0 24px var(--role-glow), inset 0 0 0 1px var(--role-color);
+  background: rgba(14, 22, 34, 0.95);
   outline: none;
+}
+
+.agent-tile:hover::after,
+.agent-tile:focus-visible::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .agent-tile:focus-visible {
   outline: 2px solid var(--cyan);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 /* Portrait wrapper 3:4 */
@@ -88,12 +124,13 @@
   object-fit: cover;
   object-position: center 15%;
   display: block;
-  transition: transform 0.35s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
 
 .agent-tile:hover .agent-portrait img,
 .agent-tile:focus-visible .agent-portrait img {
-  transform: scale(1.05);
+  transform: scale(1.08) translateY(-2px);
+  filter: contrast(1.05) brightness(1.1);
 }
 
 /* Description pop-up on hover / focus-visible */
@@ -129,35 +166,51 @@
 
 /* Meta info (Name + Role Badge BELOW portrait) */
 .agent-meta {
-  padding: 10px 12px 12px;
+  padding: 12px 14px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
   background: var(--ink-raised);
   z-index: 3;
   border-top: 1px solid var(--ink-line);
+  transition: background 0.25s ease;
 }
 
 .agent-name {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
   font-weight: 700;
   color: var(--paper);
   line-height: 1.15;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.agent-tile:hover .agent-name {
+  color: #fff;
+  text-shadow: 0 0 12px var(--role-glow);
 }
 
 .agent-meta .role-badge {
   align-self: flex-start;
-  padding: 2px 7px;
+  padding: 3px 8px;
   font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   color: var(--role-color, var(--paper-dim));
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.35);
   margin: 0;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agent-tile:hover .role-badge {
+  background: var(--role-color);
+  color: #fff;
+  border-color: var(--role-color);
+  box-shadow: 0 0 12px var(--role-glow);
 }
 
 /* Reduced motion preference */

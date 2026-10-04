@@ -133,23 +133,126 @@ body.page-agent {
             margin-bottom: 42px;
         }
 
-        .agent-info .badge {
+        /* ---------- TACTICAL BACKGROUND CALLSIGN WATERMARK ---------- */
+        .agent-bg-callsign {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+            opacity: 0.05;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .callsign-huge {
+            font-family: "Chakra Petch", sans-serif;
+            font-size: clamp(140px, 22vw, 320px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 0.85;
+            color: #fff;
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
+
+        .callsign-protocol {
+            font-family: "Chakra Petch", sans-serif;
+            font-size: clamp(18px, 3.2vw, 42px);
+            font-weight: 700;
+            letter-spacing: 0.35em;
+            color: #ff4655;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        /* ---------- AGENT TELEMETRY CHIPS ---------- */
+        .agent-telemetry {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .agent-telemetry .badge {
             display: inline-flex;
             align-items: center;
-            padding: 10px 16px;
+            padding: 8px 14px;
             border: 1px solid #ff4655;
             color: #ff4655;
-            background: rgba(255, 70, 85, 0.03);
-            font-size: 12px;
+            background: rgba(255, 70, 85, 0.06);
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .telemetry-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            background: rgba(8, 12, 18, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-family: "Chakra Petch", sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            line-height: 1;
+        }
+
+        .telemetry-label {
+            color: rgba(236, 234, 228, 0.5);
+        }
+
+        .telemetry-val {
+            color: #ff4655;
         }
 
         .agent-line {
             width: 80px;
             height: 3px;
             background: #ff4655;
-            margin: 28px 0 28px;
+            margin: 22px 0 24px;
+        }
+
+        /* ---------- ABILITY SPECS (COST & CHARGES) ---------- */
+        .ability-specs {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 16px;
+        }
+
+        .spec-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: "Chakra Petch", sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: #f2efe9;
+        }
+
+        .spec-label {
+            color: #2dd4bf;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+        }
+
+        .cost-chip .spec-label {
+            color: #ffb703;
         }
 
         .agent-name {
@@ -181,10 +284,10 @@ body.page-agent {
         }
 
         .ability-button {
-            width: 92px;
-            height: 108px;
-            border: 1px solid rgba(255, 255, 255, 0.13);
-            background: rgba(8, 12, 18, 0.72);
+            width: 96px;
+            height: 114px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(8, 12, 18, 0.78);
             color: #d7dce1;
             cursor: pointer;
             display: flex;
@@ -192,35 +295,99 @@ body.page-agent {
             align-items: center;
             justify-content: center;
             gap: 8px;
+            padding: 10px 6px 8px;
             font-family: "Chakra Petch", sans-serif;
-            transition: 0.22s ease;
-            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+            transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+            position: relative;
         }
 
         .ability-button:hover {
-            border-color: #ff4655;
-            transform: translateY(-2px);
+            border-color: rgba(255, 70, 85, 0.75);
+            transform: translateY(-3px);
+            background: rgba(14, 20, 32, 0.88);
         }
 
         .ability-button.active {
-            background: linear-gradient(180deg, rgba(255, 86, 98, 0.98), rgba(207, 49, 58, 0.95));
+            background: linear-gradient(180deg, rgba(255, 70, 85, 0.24) 0%, rgba(10, 15, 24, 0.95) 100%);
             color: #fff;
             border-color: #ff4655;
-            box-shadow: 0 0 30px rgba(255, 70, 85, 0.28);
+            box-shadow: 0 0 24px rgba(255, 70, 85, 0.32), inset 0 0 16px rgba(255, 70, 85, 0.18);
+            transform: translateY(-2px);
         }
 
-        .ability-key {
-            font-size: 42px;
-            line-height: 1;
+        .ability-button-slot {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ability-button-icon {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            filter: brightness(0.82) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+            transition: filter 0.22s ease, transform 0.22s ease;
+        }
+
+        .ability-button:hover .ability-button-icon {
+            filter: brightness(1.1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.35));
+            transform: scale(1.06);
+        }
+
+        .ability-button.active .ability-button-icon {
+            filter: brightness(1.25) drop-shadow(0 0 12px rgba(255, 70, 85, 0.7));
+            transform: scale(1.08);
+        }
+
+        .ability-button-fallback {
+            font-size: 32px;
             font-weight: 700;
+            color: #ff4655;
+        }
+
+        .ability-key-badge {
+            position: absolute;
+            top: -2px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 4px;
+            background: rgba(4, 8, 14, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #f2efe9;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            border-radius: 2px;
+            transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+        }
+
+        .ability-button.active .ability-key-badge {
+            background: #ff4655;
+            border-color: #ff4655;
+            color: #fff;
+            box-shadow: 0 0 8px rgba(255, 70, 85, 0.7);
         }
 
         .ability-short {
-            font-size: 12px;
-            letter-spacing: 1.8px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            opacity: 0.92;
+            color: rgba(236, 234, 228, 0.72);
+            transition: color 0.22s ease;
+        }
+
+        .ability-button.active .ability-short {
+            color: #fff;
+            font-weight: 600;
         }
 
         .ability-content {
@@ -603,30 +770,46 @@ body.page-agent {
     margin-bottom:16px;
 }
 
-.ability-button{
-    width:98px;
-    height:108px;
+.ability-button {
+    width: 98px;
+    height: 114px;
+}
+
+.ability-panel {
+    animation: abilityPanelIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes abilityPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.agent-detail-image {
+    pointer-events: none;
+    user-select: none;
 }
 
 /* remove extra black feeling */
-.agent-detail{
-    background:transparent;
+.agent-detail {
+    background: transparent;
 }
 
-@media (max-width: 1280px){
-    .agent-info{ width:min(40vw, 520px); }
-    .agent-name{ font-size:clamp(64px, 6.2vw, 102px); }
-    .ability-content{ width:360px; right:34px; }
-    .ability-button{ width:90px; height:102px; }
+@media (max-width: 1280px) {
+    .agent-info { width: min(40vw, 520px); }
+    .agent-name { font-size: clamp(64px, 6.2vw, 102px); }
+    .ability-content { width: 360px; right: 34px; }
+    .ability-button { width: 92px; height: 108px; }
 }
 
-@media (max-width: 980px){
-    .agent-main{ padding-bottom:34px; }
-    .agent-name{ white-space:normal; }
-}
-
-/* Fix mobile: blok desktop di atas (tanpa media query) menimpa layout tumpuk di layar kecil */
 @media (max-width: 980px) {
+    .agent-main { padding-bottom: 34px; }
+    .agent-name { white-space: normal; }
     .agent-info,
     .ability-content {
         position: relative;
@@ -639,4 +822,158 @@ body.page-agent {
     }
     .ability-content { margin-top: 28px; }
     .agent-name { white-space: normal; font-size: clamp(52px, 13vw, 96px); letter-spacing: -2px; }
+    .ability-buttons {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .ability-button {
+        width: calc(50% - 6px);
+        max-width: none;
+        height: 84px;
+        flex-direction: row;
+        gap: 10px;
+        padding: 8px 14px;
+    }
+    .ability-button-slot {
+        width: 44px;
+        height: 44px;
+    }
+    .ability-button-icon {
+        width: 38px;
+        height: 38px;
+    }
 }
+
+/* =========================================================
+   TACTICAL AGENT PAGER
+   ========================================================= */
+.agent-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 28px 48px 56px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
+}
+
+.agent-pager-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 22px;
+    background: rgba(7, 11, 18, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--paper, #f2efe9);
+    text-decoration: none;
+    font-family: "Chakra Petch", sans-serif;
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.agent-pager-btn:hover {
+    border-color: #ff4655;
+    background: rgba(14, 20, 32, 0.95);
+    box-shadow: 0 0 24px rgba(255, 70, 85, 0.28);
+}
+
+.agent-pager-btn.prev:hover {
+    transform: translateX(-4px);
+}
+
+.agent-pager-btn.next:hover {
+    transform: translateX(4px);
+}
+
+.pager-arrow {
+    font-size: 1.35rem;
+    color: #ff4655;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.agent-pager-btn.prev:hover .pager-arrow {
+    transform: translateX(-3px);
+}
+
+.agent-pager-btn.next:hover .pager-arrow {
+    transform: translateX(3px);
+}
+
+.pager-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.agent-pager-btn.next .pager-meta {
+    text-align: right;
+}
+
+.pager-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: rgba(236, 234, 228, 0.52);
+    font-weight: 600;
+}
+
+.pager-name {
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.agent-pager-roster {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(236, 234, 228, 0.78);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agent-pager-roster:hover {
+    color: #ff4655;
+    border-color: rgba(255, 70, 85, 0.6);
+    background: rgba(255, 70, 85, 0.08);
+    box-shadow: 0 0 16px rgba(255, 70, 85, 0.2);
+}
+
+.roster-grid-icon {
+    font-size: 14px;
+    line-height: 1;
+    color: #ff4655;
+}
+
+@media (max-width: 680px) {
+    .agent-pager {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 20px 16px 40px;
+    }
+    .agent-pager-roster {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+    .agent-pager-btn {
+        flex: 1;
+        min-width: 130px;
+        padding: 10px 14px;
+    }
+    .pager-name {
+        font-size: 0.94rem;
+    }
+}
+

@@ -1,11 +1,15 @@
 ---
 import { navLinks } from "./links";
+import LogoMark from "./LogoMark.astro";
 ---
 
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <a href="/" class="nav-mark"><span class="dot"></span> UNSCOPED</a>
+      <a href="/" class="nav-mark" aria-label="UNSCOPED - Home">
+        <LogoMark size={22} />
+        <span>UNSCOPED</span>
+      </a>
       <ul class="footer-links">
         {navLinks.map((l) => <li><a href={l.href} data-i18n={l.i18nKey}>{l.label}</a></li>)}
       </ul>

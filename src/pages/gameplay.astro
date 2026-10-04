@@ -180,17 +180,17 @@ const round = [
           <div class="stat-section-title" data-i18n="gameplay.modalDmgTitle">// ANATOMI DAMAGE PER PELURU</div>
           <div class="damage-anatomy-grid">
             <div class="damage-card head">
-              <div class="damage-target" data-i18n="gameplay.modalHead">🎯 KEPALA (HEAD)</div>
+              <div class="damage-target" data-i18n="gameplay.modalHead">KEPALA (HEAD)</div>
               <div class="damage-val" id="modal-dmg-head">160</div>
               <div class="damage-sub" id="modal-lethal-head">Lethal (1-Shot Kill)</div>
             </div>
             <div class="damage-card body">
-              <div class="damage-target" data-i18n="gameplay.modalBody">🛡️ BADAN (BODY)</div>
+              <div class="damage-target" data-i18n="gameplay.modalBody">BADAN (BODY)</div>
               <div class="damage-val" id="modal-dmg-body">40</div>
               <div class="damage-sub" id="modal-shots-body">4 Tembakan (150 HP)</div>
             </div>
             <div class="damage-card leg">
-              <div class="damage-target" data-i18n="gameplay.modalLeg">🦵 KAKI (LEGS)</div>
+              <div class="damage-target" data-i18n="gameplay.modalLeg">KAKI (LEGS)</div>
               <div class="damage-val" id="modal-dmg-leg">34</div>
               <div class="damage-sub" id="modal-shots-leg">5 Tembakan (150 HP)</div>
             </div>
@@ -292,6 +292,66 @@ const round = [
     </div>
   </dialog>
 
+  <!-- TACTICAL MAP INTEL DOSSIER MODAL -->
+  <dialog id="map-modal" class="weapon-modal map-modal" aria-labelledby="modal-map-name">
+    <div class="weapon-modal-backdrop" data-close-map-modal></div>
+    <div class="weapon-modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="badge" id="modal-map-badge" data-i18n="gameplay.mapDossier">DOSSIER PETA // TAKTIKAL</span>
+          <h2 id="modal-map-name">ASCENT</h2>
+        </div>
+        <button type="button" class="btn-modal-close" data-close-map-modal aria-label="Tutup modal" data-i18n-aria="gameplay.mapCloseAria">
+          ✕ ESC
+        </button>
+      </div>
+
+      <div class="modal-body-grid">
+        <!-- Left: Map Preview & Directive Tip -->
+        <div class="modal-col-visual">
+          <div class="modal-img-container map-modal-img-wrap">
+            <img id="modal-map-img" src="" alt="" />
+            <div class="map-modal-loc-banner">
+              <span class="loc-pin">//</span> <span id="modal-map-location">Venesia, Italia</span>
+            </div>
+          </div>
+          <p id="modal-map-desc" class="modal-desc"></p>
+
+          <div class="map-pro-tip">
+            <div class="tip-badge" data-i18n="gameplay.mapProDirective">// PRO DIRECTIVE</div>
+            <p id="modal-map-tip" class="tip-text"></p>
+          </div>
+        </div>
+
+        <!-- Right: Tactical Intel, Gimmicks, Callouts, and Meta Agents -->
+        <div class="modal-col-intel">
+          <div class="stat-section-title" data-i18n="gameplay.mapTacticalSpecs">// SPESIFIKASI TAKTIKAL PETA</div>
+
+          <div class="map-intel-grid">
+            <div class="map-intel-item">
+              <span class="intel-label" data-i18n="gameplay.mapSitesLabel">JUMLAH PLANT SITE</span>
+              <span class="intel-val" id="modal-map-sites">2 Sites (A, B)</span>
+            </div>
+            <div class="map-intel-item">
+              <span class="intel-label" data-i18n="gameplay.mapFeatureLabel">MEKANIK / FITUR UTAMA</span>
+              <span class="intel-val text-cyan" id="modal-map-feature">Pintu Baja Mekanis & Kontrol Mid</span>
+            </div>
+          </div>
+
+          <div class="map-intel-block">
+            <span class="stat-section-title" style="margin-top:20px;" data-i18n="gameplay.mapCalloutsTitle">// CALLOUTS AREA KUNCI</span>
+            <div id="modal-map-callouts" class="map-callout-chips"></div>
+          </div>
+
+          <div class="map-intel-block">
+            <span class="stat-section-title" style="margin-top:20px;" data-i18n="gameplay.mapAgentsTitle">// REKOMENDASI AGENT META</span>
+            <div id="modal-map-agents" class="map-agent-pills"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <section id="maps" class="tight">
     <div class="container">
       <div class="section-head">
@@ -300,13 +360,35 @@ const round = [
       </div>
       <div class="grid-map">
         {maps.map((m, i) => (
-          <article class="hud-card map-card" data-aos="fade-up" data-aos-delay={(i % 3) * 80}>
+          <article
+            class="hud-card map-card"
+            data-aos="fade-up"
+            data-aos-delay={(i % 3) * 80}
+            data-map-name={m.name}
+            tabindex="0"
+            role="button"
+            aria-haspopup="dialog"
+            aria-label={`Inspeksi intel peta ${m.name}`}
+          >
             <div class="map-img">
               <Image src={img(`maps/${m.image}.avif`)} alt={`Peta ${m.name}`} width={640} />
+              <div class="map-img-overlay">
+                <span class="map-badge-site" data-i18n={`map.sites.${m.image}`}>{m.intel.sites}</span>
+              </div>
             </div>
             <div class="map-body">
-              <h3>{m.name}</h3>
-              <p data-i18n={`map.desc.${m.image}`}>{m.description}</p>
+              <div class="map-title-row">
+                <h3>{m.name}</h3>
+                <span class="map-location-sub" data-i18n={`map.loc.${m.image}`}>{m.intel.location}</span>
+              </div>
+              <p class="map-lede" data-i18n={`map.desc.${m.image}`}>{m.description}</p>
+              
+              <div class="map-action-bar">
+                <span class="btn-inspect-map">
+                  <span data-i18n="gameplay.inspectMap">INSPEKSI INTEL PETA</span>
+                  <span class="arrow" aria-hidden="true">&rarr;</span>
+                </span>
+              </div>
             </div>
           </article>
         ))}
@@ -315,8 +397,9 @@ const round = [
   </section>
 </Base>
 
-<script define:vars={{ weaponsData: weapons }}>
+<script define:vars={{ weaponsData: weapons, mapsData: maps }}>
   window.__WEAPONS_DATA__ = weaponsData;
+  window.__MAPS_DATA__ = mapsData;
 </script>
 
 <script>
@@ -571,9 +654,111 @@ const round = [
     });
   }
 
+  function setupMapInspector() {
+    const mapsData = (window as any).__MAPS_DATA__;
+    if (!mapsData) return;
+
+    const modal = document.getElementById("map-modal") as HTMLDialogElement | null;
+    if (!modal) return;
+
+    let currentMap: any = null;
+
+    const nameEl = document.getElementById("modal-map-name");
+    const locEl = document.getElementById("modal-map-location");
+    const imgEl = document.getElementById("modal-map-img") as HTMLImageElement | null;
+    const descEl = document.getElementById("modal-map-desc");
+    const tipEl = document.getElementById("modal-map-tip");
+    const sitesEl = document.getElementById("modal-map-sites");
+    const featureEl = document.getElementById("modal-map-feature");
+    const calloutsEl = document.getElementById("modal-map-callouts");
+    const agentsEl = document.getElementById("modal-map-agents");
+
+    function renderMapModal() {
+      if (!currentMap) return;
+
+      const lang = getLanguage();
+      const dict = translations[lang] || translations.id;
+
+      if (nameEl) nameEl.textContent = currentMap.name.toUpperCase();
+      if (locEl) locEl.textContent = dict[`map.loc.${currentMap.image}`] || currentMap.intel.location;
+      if (descEl) descEl.textContent = dict[`map.desc.${currentMap.image}`] || currentMap.description;
+      if (tipEl) tipEl.textContent = dict[`map.tip.${currentMap.image}`] || currentMap.intel.tacticalTip;
+      if (sitesEl) sitesEl.textContent = dict[`map.sites.${currentMap.image}`] || currentMap.intel.sites;
+      if (featureEl) featureEl.textContent = dict[`map.feature.${currentMap.image}`] || currentMap.intel.feature;
+
+      const card = document.querySelector(`[data-map-name="${currentMap.name}"]`);
+      const imgInCard = card ? (card.querySelector(".map-img img") as HTMLImageElement | null) : null;
+      if (imgEl && imgInCard) {
+        imgEl.src = imgInCard.src;
+        imgEl.alt = currentMap.name;
+      }
+
+      if (calloutsEl) {
+        calloutsEl.innerHTML = currentMap.intel.callouts
+          .map((c: string) => `<span class="callout-chip">${c}</span>`)
+          .join("");
+      }
+
+      const viewProfileText = dict["agents.viewProfile"] || (lang === "en" ? "View profile" : "Lihat profil");
+      if (agentsEl) {
+        agentsEl.innerHTML = currentMap.intel.recommendedAgents
+          .map((a: any) => `
+            <a href="/agents/${a.slug}/" class="agent-pill role-${a.role.toLowerCase()}" title="${viewProfileText} ${a.name}">
+              <span class="agent-pill-name">${a.name}</span>
+              <span class="agent-pill-role">${a.role}</span>
+            </a>
+          `)
+          .join("");
+      }
+    }
+
+    function openMap(m: any) {
+      currentMap = m;
+      renderMapModal();
+      modal!.showModal();
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMap() {
+      modal!.close();
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll<HTMLElement>(".map-card").forEach((card) => {
+      const mapName = card.dataset.mapName;
+      if (!mapName) return;
+      const found = mapsData.find((item: any) => item.name.toLowerCase() === mapName.toLowerCase());
+      if (found) {
+        card.addEventListener("click", () => openMap(found));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openMap(found);
+          }
+        });
+      }
+    });
+
+    document.querySelectorAll("[data-close-map-modal]").forEach((el) => {
+      el.addEventListener("click", closeMap);
+    });
+
+    modal.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      closeMap();
+    });
+
+    window.addEventListener("langchange", () => {
+      if (modal && modal.open) {
+        renderMapModal();
+      }
+    });
+  }
+
   document.addEventListener("astro:page-load", () => {
     setupFilters("senjata");
     setupWeaponInspector();
+    setupMapInspector();
   });
 </script>
 

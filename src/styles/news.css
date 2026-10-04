@@ -1,5 +1,6 @@
 
   .page-news .hud-card-img-wrap {
+
     width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
@@ -70,30 +71,6 @@
 
   .page-news .hud-card {
     position: relative;
-    overflow: hidden;
-  }
-  .page-news .hud-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -50%;
-    width: 50%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-    opacity: .55;
-    animation: lightLineIdle 3.2s linear infinite;
-    pointer-events: none;
-  }
-  .page-news .hud-card:hover::after,
-  .page-news .hud-card:focus-visible::after {
-    opacity: 1;
-    animation-duration: 1s;
-    height: 3px;
-    box-shadow: 0 0 12px 2px var(--cyan);
-  }
-  @keyframes lightLineIdle {
-    0%   { left: -50%; }
-    100% { left: 100%; }
   }
 
   .page-news .hud-card.is-selecting {

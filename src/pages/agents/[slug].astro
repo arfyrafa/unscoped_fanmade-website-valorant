@@ -2,6 +2,7 @@
 import { Image, getImage } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 import { agents, type Agent } from "../../data/agents";
+import { getAgentSpec } from "../../data/agent-specs";
 import { agentImg, abilityImg } from "../../lib/img";
 import "../../styles/agent-detail.css";
 
@@ -20,11 +21,17 @@ interface Props { agent: Agent; prev: Agent; next: Agent }
 const { agent, prev, next } = Astro.props;
 const portrait = agentImg(agent.image);
 const og = await getImage({ src: portrait, width: 1200, format: "jpeg" });
+const spec = getAgentSpec(agent.slug);
 ---
 
 <Base title={agent.name} description={`${agent.name}, ${agent.role}. ${agent.short}`} bodyClass="page-agent" image={og.src}>
   <div class="agent-detail">
     <div class="agent-scene">
+      <div class="agent-bg-callsign" aria-hidden="true">
+        <span class="callsign-huge">{agent.name}</span>
+        <span class="callsign-protocol">// PROTOCOL {spec.protocol}</span>
+      </div>
+
       <div class="agent-scene-media">
         <Image src={portrait} alt="" aria-hidden="true" class="agent-bg-image" width={900} loading="eager" />
         <Image
@@ -41,27 +48,57 @@ const og = await getImage({ src: portrait, width: 1200, format: "jpeg" });
       <section class="agent-main">
         <div class="agent-info">
           <a href="/agents/" class="back-agent" data-i18n="agents.backToAgents">&larr; BACK TO AGENTS</a>
-          <span class="badge">{agent.role}</span>
+          
+          <div class="agent-telemetry">
+            <span class="badge role-badge">{agent.role}</span>
+            <span class="telemetry-chip">
+              <span class="telemetry-label">ORIGIN //</span>
+              <span class="telemetry-val">{spec.originId}</span>
+            </span>
+            <span class="telemetry-chip">
+              <span class="telemetry-label">PROTOCOL //</span>
+              <span class="telemetry-val">#{spec.protocol}</span>
+            </span>
+          </div>
+
           <div class="agent-line"></div>
           <h1 class="agent-name">{agent.name}</h1>
           <p class="agent-desc" data-i18n={`agent.bio.${agent.slug}`}>{agent.bio}</p>
 
           <div class="ability-buttons" role="tablist" aria-label={`Kemampuan ${agent.name}`} data-i18n-aria="agents.abilityTablistAria">
-            {agent.abilities.map((ab, i) => (
-              <button
-                type="button"
-                class:list={["ability-button", { active: i === 0 }]}
-                role="tab"
-                id={`tab-${ab.key}`}
-                aria-controls={`panel-${ab.key}`}
-                aria-selected={i === 0 ? "true" : "false"}
-                tabindex={i === 0 ? 0 : -1}
-                data-key={ab.key}
-              >
-                <span class="ability-key">{ab.key}</span>
-                <span class="ability-short" data-i18n={`ability.type.${ab.type.toLowerCase()}`}>{ab.type}</span>
-              </button>
-            ))}
+            {agent.abilities.map((ab, i) => {
+              const icon = abilityImg(agent.image, ab.key);
+              return (
+                <button
+                  type="button"
+                  class:list={["ability-button", { active: i === 0 }]}
+                  role="tab"
+                  id={`tab-${ab.key}`}
+                  aria-controls={`panel-${ab.key}`}
+                  aria-selected={i === 0 ? "true" : "false"}
+                  tabindex={i === 0 ? 0 : -1}
+                  data-key={ab.key}
+                  aria-label={`${ab.name} (${ab.key})`}
+                >
+                  <div class="ability-button-slot">
+                    {icon ? (
+                      <Image
+                        src={icon}
+                        alt=""
+                        aria-hidden="true"
+                        width={64}
+                        height={64}
+                        class="ability-button-icon"
+                      />
+                    ) : (
+                      <span class="ability-button-fallback">{ab.key}</span>
+                    )}
+                    <span class="ability-key-badge">{ab.key}</span>
+                  </div>
+                  <span class="ability-short" data-i18n={`ability.type.${ab.type.toLowerCase()}`}>{ab.type}</span>
+                </button>
+              );
+            })}
           </div>
           <p class="ability-hint" data-i18n-html="agents.abilityHint">Tekan <kbd>Q</kbd><kbd>E</kbd><kbd>C</kbd><kbd>X</kbd> di keyboard untuk ganti kemampuan.</p>
         </div>
@@ -69,6 +106,7 @@ const og = await getImage({ src: portrait, width: 1200, format: "jpeg" });
         <div class="ability-content">
           {agent.abilities.map((ab, i) => {
             const icon = abilityImg(agent.image, ab.key);
+            const abSpec = spec.specs[ab.key as "Q" | "E" | "C" | "X"] || { charges: "1 Charge", cost: "Standard" };
             return (
               <div class="ability-panel" role="tabpanel" id={`panel-${ab.key}`} aria-labelledby={`tab-${ab.key}`} hidden={i !== 0}>
                 <div class="ability-visual">
@@ -86,6 +124,16 @@ const og = await getImage({ src: portrait, width: 1200, format: "jpeg" });
                   <span class="ability-type" data-i18n={`ability.type.${ab.type.toLowerCase()}`}>{ab.type}</span>
                 </div>
                 <h3 class="ability-name">{ab.name}</h3>
+
+                <div class="ability-specs">
+                  <span class="spec-chip cost-chip">
+                    <span class="spec-label" data-i18n="agents.specCostLabel">BIAYA //</span> {abSpec.cost}
+                  </span>
+                  <span class="spec-chip charges-chip">
+                    <span class="spec-label" data-i18n="agents.specChargesLabel">CHARGES //</span> {abSpec.charges}
+                  </span>
+                </div>
+
                 <p class="ability-desc" data-i18n={`agent.ability.${agent.slug}.${ab.key}.desc`}>{ab.description}</p>
               </div>
             );
@@ -95,8 +143,23 @@ const og = await getImage({ src: portrait, width: 1200, format: "jpeg" });
     </div>
 
     <nav class="agent-pager" aria-label="Agent lain" data-i18n-aria="agents.pagerAria">
-      <a href={`/agents/${prev.slug}/`}>&larr; {prev.name}</a>
-      <a href={`/agents/${next.slug}/`}>{next.name} &rarr;</a>
+      <a href={`/agents/${prev.slug}/`} class="agent-pager-btn prev">
+        <span class="pager-arrow" aria-hidden="true">&larr;</span>
+        <div class="pager-meta">
+          <span class="pager-tag" data-i18n="agents.pagerPrev">AGENT SEBELUMNYA</span>
+          <span class="pager-name">{prev.name}</span>
+        </div>
+      </a>
+      <a href="/agents/" class="agent-pager-roster" data-i18n="agents.allRoster">
+        <span class="roster-grid-icon" aria-hidden="true">▦</span> ROSTER LENGKAP
+      </a>
+      <a href={`/agents/${next.slug}/`} class="agent-pager-btn next">
+        <div class="pager-meta">
+          <span class="pager-tag" data-i18n="agents.pagerNext">AGENT BERIKUTNYA</span>
+          <span class="pager-name">{next.name}</span>
+        </div>
+        <span class="pager-arrow" aria-hidden="true">&rarr;</span>
+      </a>
     </nav>
   </div>
 </Base>
